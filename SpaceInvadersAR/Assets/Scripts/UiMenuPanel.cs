@@ -10,6 +10,13 @@ namespace Assets.Scripts
             get { return uiRoomLobbyPanel; }
         }
 
+        [SerializeField]
+        private UiCurrentRoomLobbyPanel uiCurrentRoomLobbyPanel;
+        public UiCurrentRoomLobbyPanel UiCurrentRoomLobbyPanel
+        {
+            get { return uiCurrentRoomLobbyPanel; }
+        }
+
         private void Awake()
         {
 

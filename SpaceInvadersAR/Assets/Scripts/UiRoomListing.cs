@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts
 {
-    public class UiRoomListing : MonoBehaviour
+    public sealed class UiRoomListing : MonoBehaviour
     {
         public Button roomListingButton;
 

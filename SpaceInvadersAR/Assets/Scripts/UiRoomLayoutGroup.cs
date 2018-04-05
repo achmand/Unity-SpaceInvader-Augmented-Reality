@@ -47,6 +47,8 @@ namespace Assets.Scripts
                     var newRoomListingEntry = Instantiate(RoomListingPrefab).GetComponent<UiRoomListing>();
                     newRoomListingEntry.transform.SetParent(LayoutGroupTransform, false);
                     UiRoomListingsCollection.Add(roomName, newRoomListingEntry);
+                    newRoomListingEntry.SetRoomName(roomName);
+                    newRoomListingEntry.Updated = true;
                 }
             }
             else
@@ -82,7 +84,6 @@ namespace Assets.Scripts
                 var removeRoom = removedRooms[i];
                 var removeRoomGameObj = removeRoom.gameObject;
                 UiRoomListingsCollection.Remove(removeRoom.RoomName);
-
                 Destroy(removeRoomGameObj);
             }
         }
