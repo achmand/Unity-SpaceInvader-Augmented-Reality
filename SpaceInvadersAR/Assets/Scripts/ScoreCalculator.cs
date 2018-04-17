@@ -11,13 +11,13 @@ namespace Assets.Scripts
 
     public sealed class ScoreCalculator
     {
-        private readonly Dictionary<ScorableActionType, int> scorableActionCollection = new Dictionary<ScorableActionType, int>
+        private readonly Dictionary<ScorableActionType, int> scorableActionCollection = new Dictionary<ScorableActionType, int>(ScorableActionTypeEqualityComparer.Default)
         {
             { ScorableActionType.EnemyHit, 40},
             { ScorableActionType.EnemyKilled, 150}
         };
 
-        private readonly Dictionary<EnemyType, float> enemyScorableActionMultipliers = new Dictionary<EnemyType, float>
+        private readonly Dictionary<EnemyType, float> enemyScorableActionMultipliers = new Dictionary<EnemyType, float> (EnemyTypeEqualityComparer.Default)
         {
             { EnemyType.SimpleDroid, 1 },
             { EnemyType.WarriorDroid, 1.5f },

@@ -13,7 +13,7 @@ namespace Assets.Scripts
         public string PlayerName { get; private set; }
 
         private PhotonView photonView;
-        private int playersInGame = 0;
+        public int playersInGame = 0;
 
         private void Awake()
         {

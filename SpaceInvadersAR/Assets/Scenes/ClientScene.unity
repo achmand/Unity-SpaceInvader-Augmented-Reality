@@ -141,6 +141,7 @@ Transform:
   - {fileID: 1249898391}
   - {fileID: 1379082556}
   - {fileID: 144297023}
+  - {fileID: 732014796}
   - {fileID: 1918727786}
   - {fileID: 1386806567}
   - {fileID: 600731069}
@@ -762,7 +763,7 @@ Transform:
   - {fileID: 1313853184}
   - {fileID: 1272272842}
   m_Father: {fileID: 96751225}
-  m_RootOrder: 14
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &432847985
 GameObject:
@@ -825,7 +826,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 96751225}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &434911017
 MonoBehaviour:
@@ -1035,7 +1036,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 96751225}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &494185061
 MonoBehaviour:
@@ -1240,7 +1241,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 96751225}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &575250174
 GameObject:
@@ -1514,7 +1515,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 96751225}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &600731070
 MonoBehaviour:
@@ -1642,7 +1643,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelNo: 2
-  levelTimeSeconds: 120
+  levelTimeSeconds: 30
   levelName: Gliese 180 b
   planetType: 2
   levelDifficulty: 1
@@ -1661,7 +1662,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &635198723
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1868,6 +1869,65 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 723307671}
+--- !u!1 &732014795
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 732014796}
+  - component: {fileID: 732014797}
+  m_Layer: 0
+  m_Name: Audio Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &732014796
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 732014795}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 96751225}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &732014797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 732014795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe0d25ed25834cb4ab36d9c8dc606d6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundClips:
+  - name: Laser Shot
+    audioClip: {fileID: 8300000, guid: 37804b17b9d91774f9772a3a09226a2a, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Level End Jingle
+    audioClip: {fileID: 8300000, guid: e1977df57a978a64db666eba4ece41ff, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Level Start Jingle
+    audioClip: {fileID: 8300000, guid: 06f897773df152c48a8df6fb513b36c4, type: 3}
+    volume: 0.72
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
 --- !u!1 &792065023
 GameObject:
   m_ObjectHideFlags: 0
@@ -1985,7 +2045,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelNo: 3
-  levelTimeSeconds: 180
+  levelTimeSeconds: 30
   levelName: Kepler 438 b
   planetType: 3
   levelDifficulty: 2
@@ -2196,7 +2256,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1116515522}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0.0017241186}
+  m_LocalPosition: {x: 0, y: -0, z: 0.015}
   m_LocalScale: {x: 0.0093, y: 0.0093, z: 0.0093}
   m_Children: []
   m_Father: {fileID: 1072001614}
@@ -2810,7 +2870,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 96751225}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1227788520
 MonoBehaviour:
@@ -2824,6 +2884,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyCluster: {fileID: 1605521452}
+  enemyProjectile: {fileID: 1059704183573412, guid: 9c6923e1b8ed3b44581103540d104a59,
+    type: 2}
 --- !u!1 &1245201778
 GameObject:
   m_ObjectHideFlags: 0
@@ -3230,7 +3292,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 96751225}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1371949923
 MonoBehaviour:
@@ -3360,11 +3422,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clientGameManager: {fileID: 0}
   gameTimerManager: {fileID: 0}
+  audioManager: {fileID: 0}
   playerManager: {fileID: 0}
   gameScoreManager: {fileID: 0}
   damageManager: {fileID: 0}
   gamePoolManager: {fileID: 0}
   enemyPoolManager: {fileID: 0}
+  projectilePoolManager: {fileID: 0}
   enemyManager: {fileID: 0}
   enemyClusterFormationRepository: {fileID: 0}
   levelRepository: {fileID: 0}
@@ -3400,7 +3464,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 96751225}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1386806568
 MonoBehaviour:
@@ -3879,7 +3943,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelNo: 4
-  levelTimeSeconds: 240
+  levelTimeSeconds: 30
   levelName: Tau Ceti e
   planetType: 4
   levelDifficulty: 3
@@ -4459,7 +4523,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelNo: 1
-  levelTimeSeconds: 90
+  levelTimeSeconds: 120
   levelName: Proxima Centauri b
   planetType: 1
   levelDifficulty: 0
@@ -4699,6 +4763,46 @@ Transform:
   m_Father: {fileID: 1072001614}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!1 &1671141855
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1671141856}
+  - component: {fileID: 1671141857}
+  m_Layer: 0
+  m_Name: Projectile Pool Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1671141856
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1671141855}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1847914681}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1671141857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1671141855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b65fc980d82cc14d98b5fc33b7d4519, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1676210756
 GameObject:
   m_ObjectHideFlags: 0
@@ -4723,7 +4827,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1676210756}
   m_LocalRotation: {x: 0.68604296, y: -0.17130414, z: -0.17130414, w: 0.68604296}
-  m_LocalPosition: {x: -0, y: 0, z: -0.0064}
+  m_LocalPosition: {x: -0, y: 0, z: -0.003}
   m_LocalScale: {x: 0.006, y: 0.006, z: 0.006}
   m_Children: []
   m_Father: {fileID: 2038756266}
@@ -5254,7 +5358,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4670573711631664, guid: 09b133b3b909be54ca2d751348dba372, type: 2}
       propertyPath: m_RootOrder
-      value: 12
+      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 09b133b3b909be54ca2d751348dba372, type: 2}
@@ -5403,8 +5507,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2009535845}
+  - {fileID: 1671141856}
   m_Father: {fileID: 96751225}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1847914682
 MonoBehaviour:
@@ -5453,6 +5558,11 @@ MonoBehaviour:
       poolableObject: {fileID: 1191803935633388, guid: 4a25a6506233a3a45adaca235a613b4b,
         type: 2}
       initialSize: 6
+  simpleProjectilePool:
+    poolOptions:
+      poolableObject: {fileID: 1754756299614904, guid: 36553136d7d2b4f4795d4c76f29c74d5,
+        type: 2}
+      initialSize: 4
 --- !u!1 &1856068848
 GameObject:
   m_ObjectHideFlags: 0
@@ -5482,7 +5592,7 @@ Transform:
   - {fileID: 1466112159}
   - {fileID: 2113732503}
   m_Father: {fileID: 96751225}
-  m_RootOrder: 15
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1856068850
 MonoBehaviour:
@@ -5727,7 +5837,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 96751225}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1918727787
 MonoBehaviour:
@@ -6038,7 +6148,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 96751225}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2096010119
 MonoBehaviour:

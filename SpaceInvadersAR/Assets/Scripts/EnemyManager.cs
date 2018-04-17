@@ -2,7 +2,6 @@
 
 namespace Assets.Scripts
 {
-    // TODO -> Add current game mode details ... 
     // TODO -> Refactor some code from enemy cluster and here, must be more elegant than this !!!
     public sealed class EnemyManager : MonoBehaviour
     {
@@ -11,6 +10,9 @@ namespace Assets.Scripts
 
         private RPCEnemyManager rpcEnemyManager;
         private ClientGameManager clientGameManager;
+        private CooldownTimer enemyAttackCooldownTimer;
+
+        //private EnemyAttackCalculator enemyAttackCalculator;
 
         private bool initialized;
 
@@ -21,10 +23,13 @@ namespace Assets.Scripts
             clientGameManager = globalReferenceManager.clientGameManager;
 
             enemyCluster.Initialize();
+            //enemyAttackCalculator = new EnemyAttackCalculator();
             //CreateNewClusterMaster();
 
             initialized = true;
         }
+
+        //public bool debug_shoot;
 
         void Update()
         {
@@ -37,6 +42,12 @@ namespace Assets.Scripts
             {
                 CreateNewClusterMaster();
             }
+
+            //if (debug_shoot)
+            //{
+            //    debug_shoot = false;
+            //    InitiateProjectileAttack();
+            //}
         }
 
         // returns true if enemy dies  
@@ -56,7 +67,7 @@ namespace Assets.Scripts
             return currentEnemyClusterCollection[enemyId];
         }
 
-        public EnemyClusterType CreateNewClusterMaster(bool sendProxy = true)
+        public EnemyClusterType CreateNewClusterMaster(bool sendClient = true)
         {
             if (!PhotonNetwork.isMasterClient)
             {
@@ -67,7 +78,7 @@ namespace Assets.Scripts
             var currentLevelDifficulty = currentGameDetails.CurrentLevelDifficulty;
             var enemyClusterType = enemyCluster.CreateCluster(currentLevelDifficulty, true);
 
-            if (sendProxy)
+            if (sendClient)
             {
                 rpcEnemyManager.CreateEnemyCluster(enemyClusterType);
             }
@@ -86,5 +97,14 @@ namespace Assets.Scripts
         {
             enemyCluster.ClearCurrentCluster();
         }
+
+        //public float shootForce;
+        //private void InitiateProjectileAttack()
+        //{
+        //    var enemyTest = GetEnemyFromCluster(0);
+        //    var bullet = Instantiate(enemyProjectile, enemyTest.transform.position, enemyTest.transform.rotation);
+        //    var localPlayer = GlobalReferenceManager.GlobalInstance.playerManager.LocalPlayerOwner;
+        //    bullet.GetComponent<Rigidbody>().AddForce((localPlayer.transform.position - enemyTest.transform.position).normalized * shootForce);
+        //}
     }
 }

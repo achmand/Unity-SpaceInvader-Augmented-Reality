@@ -16,6 +16,7 @@ namespace Assets.Scripts
     //    }
     //}
 
+
     public class PlayerSpawnedEventArgs : EventArgs
     {
         public int PlayerId { get; set; }
@@ -26,19 +27,13 @@ namespace Assets.Scripts
     {
         private Dictionary<int, PlayerOwner> roomPlayerOwners;
 
-        public PhotonPlayer LocalPhotonPlayer
-        {
-            get
-            {
-                return PhotonNetwork.player;
-            }
-        }
+        public int TotalRoomPlayers { get { return roomPlayerOwners.Count; } }
 
         public PlayerOwner LocalPlayerOwner
         {
             get
             {
-                return roomPlayerOwners.ContainsKey(LocalPhotonPlayer.ID) ? roomPlayerOwners[LocalPhotonPlayer.ID] : null;
+                return roomPlayerOwners.ContainsKey(PhotonNetwork.player.ID) ? roomPlayerOwners[PhotonNetwork.player.ID] : null;
             }
         }
 
@@ -47,9 +42,9 @@ namespace Assets.Scripts
             roomPlayerOwners = new Dictionary<int, PlayerOwner>();
         }
 
-        public void AddPlayer(int playerId, PlayerOwner playerOwner)
+        public void AddPlayer(PlayerOwner playerOwner)
         {
-            roomPlayerOwners.Add(playerId, playerOwner);
+            roomPlayerOwners.Add(playerOwner.PlayerId, playerOwner);
         }
 
         public PlayerOwner ResolvePlayerOwner(int playerId)
@@ -61,6 +56,20 @@ namespace Assets.Scripts
 
             return roomPlayerOwners[playerId];
         }
+
+        //public PlayerOwner GetRandomPlayerOwner()
+        //{
+        //    if (PlayerNetwork.Instance.playersInGame == TotalRoomPlayers)
+        //    {
+        //        var keys = roomPlayerOwners.Keys.ToArray();
+        //        var keyPosition = UnityEngine.Random.Range(0, keys.Length);
+        //        var chosenKey = keys[keyPosition];
+
+        //        return roomPlayerOwners.ContainsKey(chosenKey) ? roomPlayerOwners[chosenKey] : null;
+        //    }
+
+        //    return null;
+        //}
 
         //public static PlayerManager Instance;
 

@@ -22,6 +22,8 @@ namespace Assets.Scripts
             }
         }
 
+        public int PlayerId { get { return photonPlayer.ID; } }
+
         public WeaponHolder weaponHolder;
 
         private PlayerMovement playerMovement;
@@ -29,6 +31,8 @@ namespace Assets.Scripts
         private Camera arActiveCamera;
         private PhotonView photonView;
         private RPCPlayerManager rpcPlayerManager;
+        private AudioManager audioManager;
+        private PhotonPlayer photonPlayer;
 
         private bool initialized;
 
@@ -45,6 +49,7 @@ namespace Assets.Scripts
 
             var globalComponents = GlobalReferenceManager.GlobalInstance;
             rpcPlayerManager = globalComponents.rpcPlayerManager;
+            audioManager = globalComponents.audioManager;
         }
 
         public void Initialize()
@@ -99,6 +104,7 @@ namespace Assets.Scripts
             var wasWeaponShot = weaponHolder.ShootActiveWeapon();
             if (wasWeaponShot)
             {
+                audioManager.Play("Laser Shot");
                 rpcPlayerManager.PlayerShootWeapon();
             }
         }
@@ -108,9 +114,9 @@ namespace Assets.Scripts
         {
             var globalReferenceManager = GlobalReferenceManager.GlobalInstance;
             var playerManager = globalReferenceManager.playerManager;
-            var photonPlayerId = info.sender.ID;
+            photonPlayer = info.sender;
 
-            playerManager.AddPlayer(photonPlayerId, this);
+            playerManager.AddPlayer(this);
             Initialize();
         }
 

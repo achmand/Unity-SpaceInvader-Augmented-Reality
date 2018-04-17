@@ -24,6 +24,9 @@ namespace Assets.Scripts
     [Serializable]
     public class EnemyHitParticlePool : BaseObjectPool<ParticleFx> { }
 
+    [Serializable]
+    public class SimpleProjectilePool : BaseObjectPool<SimpleProjectile> { }
+
     public sealed class GamePoolManager : MonoBehaviour
     {
         [Header("References")]
@@ -40,6 +43,7 @@ namespace Assets.Scripts
         public EnemyBomberDroidPool enemyBomberDroidPool;
         public EnemyHeavyDroidPool enemyHeavyDroidPool;
         public EnemyHitParticlePool enemyHitParticlePool;
+        public SimpleProjectilePool simpleProjectilePool;
 
         void Awake()
         {
@@ -52,6 +56,7 @@ namespace Assets.Scripts
             enemyBomberDroidPool.objectPooler.Initialize(enemyBomberDroidPool.poolOptions, rootTransform);
             enemyHeavyDroidPool.objectPooler.Initialize(enemyHeavyDroidPool.poolOptions, rootTransform);
             enemyHitParticlePool.objectPooler.Initialize(enemyHitParticlePool.poolOptions, rootTransform);
+            simpleProjectilePool.objectPooler.Initialize(simpleProjectilePool.poolOptions, rootTransform);
         }
     }
 }

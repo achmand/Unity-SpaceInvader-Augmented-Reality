@@ -25,12 +25,15 @@ namespace Assets.Scripts
 
         private EnemyPoolManager enemyPoolManager;
         private EnemyClusterFormationRepository enemyClusterFormationRepository;
+        //private PlayerManager playerManager;
 
         private const float heightSpacing = 0.07f;
         private const float widthSpacing = 0.07f;
 
         private int currentClusterDeadCounter;
         private int currentClusterCounter;
+
+        private CooldownTimer targetChangeCooldownTimer;
 
         private bool initialized;
 
@@ -39,14 +42,16 @@ namespace Assets.Scripts
             var globalComponents = GlobalReferenceManager.GlobalInstance;
             enemyPoolManager = globalComponents.enemyPoolManager;
             enemyClusterFormationRepository = globalComponents.enemyClusterFormationRepository;
+            //playerManager = globalComponents.playerManager;
         }
 
         public void Initialize()
         {
             FindReferences();
-            currentEnemyCluster = new Dictionary<int, EnemyBase>();
+            currentEnemyCluster = new Dictionary<int, EnemyBase>(Int32EqualityComparer.Default);
             currentEnemyClusterRows = new List<EnemyClusterRow>();
             scaleEasingApplier = new FloatEasingApplier();
+            targetChangeCooldownTimer = new CooldownTimer(15f);
             initialized = true;
         }
 
@@ -65,6 +70,16 @@ namespace Assets.Scripts
             //        enemy.Value.TakeDamage(100f);
             //        enemyPoolManager.DespawnEnemy(enemy.Value);
             //        currentClusterDeadCounter++;
+            //    }
+            //}
+
+            // changes targets every 15 seconds 
+            //if (PhotonNetwork.isMasterClient)
+            //{
+            //    if (targetChangeCooldownTimer.CanWeDoAction())
+            //    {
+            //        targetChangeCooldownTimer.UpdateActionTime();
+            //        SetRandomTargets();
             //    }
             //}
 
@@ -94,7 +109,6 @@ namespace Assets.Scripts
         private void CreateCluster(LevelDifficulty levelDifficulty, EnemyClusterType enemyClusterType)
         {
             ClearCurrentCluster();
-
             transform.localScale = Vector3.zero;
 
             var enemyClusterFormation = enemyClusterFormationRepository.GetEnemyClusterFormationInfo(levelDifficulty, enemyClusterType);
@@ -123,10 +137,8 @@ namespace Assets.Scripts
                         var enemyPosition = new Vector3(changeX, 0, 0);
 
                         var enemyBase = enemyPoolManager.SpawnEnemy(enemyType, enemyPosition, Quaternion.identity, true, pooledEnemyClusterRow.transform, false);
-
                         currentEnemyCluster.Add(currentClusterCounter, enemyBase);
                         enemyBase.enemyId = currentClusterCounter;
-
                         currentClusterCounter++;
 
                         if (isEvenX)
@@ -165,6 +177,7 @@ namespace Assets.Scripts
             {
                 enemyPoolManager.DespawnEnemy(enemy);
                 currentClusterDeadCounter++;
+                currentEnemyCluster.Remove(enemyId);
             }
 
             return enemyDied;
@@ -217,15 +230,6 @@ namespace Assets.Scripts
 
         public void ClearCurrentCluster()
         {
-            if (currentEnemyClusterRows.Count > 0)
-            {
-                for (int i = 0; i < currentEnemyClusterRows.Count; i++)
-                {
-                    var clusterRow = currentEnemyClusterRows[i];
-                    enemyPoolManager.DespawnEnemyClusterRow(clusterRow);
-                }
-            }
-
             if (currentEnemyCluster.Count > 0)
             {
                 var enumerator = currentEnemyCluster.GetEnumerator();
@@ -236,10 +240,38 @@ namespace Assets.Scripts
                 }
             }
 
+            if (currentEnemyClusterRows.Count > 0)
+            {
+                for (int i = 0; i < currentEnemyClusterRows.Count; i++)
+                {
+                    var clusterRow = currentEnemyClusterRows[i];
+                    enemyPoolManager.DespawnEnemyClusterRow(clusterRow);
+                }
+            }
+
             currentEnemyClusterRows.Clear();
             currentEnemyCluster.Clear();
             currentClusterDeadCounter = 0;
             currentClusterCounter = 0;
         }
+
+        //public int[] Set(int totalAttackingEnemies)
+        //{
+
+        //}
+
+        //public void SetRandomTargets()
+        //{
+        //    var enumerator = currentEnemyCluster.GetEnumerator();
+        //    while (enumerator.MoveNext())
+        //    {
+        //        var current = enumerator.Current;
+        //        var randomTarget = playerManager.GetRandomPlayerOwner();
+        //        if (randomTarget != null)
+        //        {
+        //            current.Value.targetPlayer = randomTarget;
+        //        }
+        //    }
+        //}
     }
 }

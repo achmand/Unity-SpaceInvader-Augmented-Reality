@@ -8,11 +8,13 @@ namespace Assets.Scripts
         
         [HideInInspector] public ClientGameManager clientGameManager;
         [HideInInspector] public GameTimerManager gameTimerManager;
+        [HideInInspector] public AudioManager audioManager;
         [HideInInspector] public PlayerManager playerManager;
         [HideInInspector] public GameScoreManager gameScoreManager;
         [HideInInspector] public DamageManager damageManager;
         [HideInInspector] public GamePoolManager gamePoolManager;
         [HideInInspector] public EnemyPoolManager enemyPoolManager;
+        [HideInInspector] public ProjectilePoolManager projectilePoolManager; 
         [HideInInspector] public EnemyManager enemyManager;
         [HideInInspector] public EnemyClusterFormationRepository enemyClusterFormationRepository;
         [HideInInspector] public LevelRepository levelRepository;
@@ -27,11 +29,14 @@ namespace Assets.Scripts
         {
             clientGameManager = FindObjectOfType<ClientGameManager>();
             gameTimerManager = FindObjectOfType<GameTimerManager>();
+            audioManager = FindObjectOfType<AudioManager>();
             playerManager = FindObjectOfType<PlayerManager>();
             gameScoreManager = FindObjectOfType<GameScoreManager>();
             damageManager = FindObjectOfType<DamageManager>();
             gamePoolManager = FindObjectOfType<GamePoolManager>();
             enemyPoolManager = FindObjectOfType<EnemyPoolManager>();
+            projectilePoolManager = FindObjectOfType<ProjectilePoolManager>();
+
             enemyManager = FindObjectOfType<EnemyManager>();
             enemyClusterFormationRepository = FindObjectOfType<EnemyClusterFormationRepository>();
             levelRepository = FindObjectOfType<LevelRepository>();

@@ -34,6 +34,7 @@ namespace Assets.Scripts
         private EnemyManager enemyManager;
         private LevelRepository levelRepository;
         private UiManager uiManager;
+        private AudioManager audioManager;
 
         private void Awake()
         {
@@ -43,6 +44,7 @@ namespace Assets.Scripts
             enemyManager = globalReferenceManager.enemyManager;
             levelRepository = globalReferenceManager.levelRepository;
             uiManager = globalReferenceManager.uiManager;
+            audioManager = globalReferenceManager.audioManager;
 
             currentGameState = GameState.None;
             currentGameDetails = new CurrentGameDetails
@@ -58,7 +60,7 @@ namespace Assets.Scripts
                 currentGameState = GameState.LevelTransitioning;
                 StartLevelMaster();
             }
-            
+
             if (currentGameState == GameState.LevelStarted)
             {
                 CheckCurrentLevelState();
@@ -74,29 +76,31 @@ namespace Assets.Scripts
         public void StartGame()
         {
             enemyManager.InitializeGame();
-            if (PhotonNetwork.isMasterClient)
-            {
-                StartLevelMaster();
-            }
+            StartLevelMaster();
         }
 
         public void StartLevelMaster()
         {
-            SetCurrentLevelDetails(currentGameDetails.currentLevelNo);
-            var currentLevel = currentGameDetails.currentLevel;
+            if (PhotonNetwork.isMasterClient)
+            {
+                var currentLevelNo = currentGameDetails.currentLevelNo;
+                SetCurrentLevelDetails(currentLevelNo);
+                var currentLevel = currentGameDetails.currentLevel;
 
-            var now = PhotonNetwork.time;
-            var levelTimeSeconds = currentLevel.levelTimeSeconds;
+                var now = PhotonNetwork.time;
+                var levelTimeSeconds = currentLevel.levelTimeSeconds;
 
-            gameTimerManager.SetLevelTimeLength(levelTimeSeconds);
-            gameTimerManager.SetLevelStartTime(now);
+                gameTimerManager.SetLevelTimeLength(levelTimeSeconds);
+                gameTimerManager.SetLevelStartTime(now);
 
-            var levelNo = currentLevel.levelNo;
-            var startingClusterType = enemyManager.CreateNewClusterMaster();
+                var levelNo = currentLevel.levelNo;
+                var startingClusterType = enemyManager.CreateNewClusterMaster();
 
-            rpcGameManager.StartLevelAck(levelNo, now, startingClusterType);
+                rpcGameManager.StartLevelAck(levelNo, now, startingClusterType);
 
-            currentGameState = GameState.LevelStarted;
+                currentGameState = GameState.LevelStarted;
+                audioManager.Play("Level Start Jingle");
+            }
         }
 
         public void StartLevelClient(int levelNo, double levelStartTime, EnemyClusterType startingEnemyClusterType)
@@ -113,6 +117,7 @@ namespace Assets.Scripts
             enemyManager.CreateNewCluster(startingEnemyClusterType);
 
             currentGameState = GameState.LevelStarted;
+            audioManager.Play("Level Start Jingle");
         }
 
         private void SetCurrentLevelDetails(int levelNo)
@@ -126,6 +131,7 @@ namespace Assets.Scripts
             var level = levelRepository.GetPlanetLevel(levelNo);
             level.planet.SetCurrentLevelRingActive(true);
             currentGameDetails.currentLevel = level;
+            audioManager.PlayLevelTheme(levelNo);
         }
 
         private void CheckCurrentLevelState()
@@ -135,6 +141,7 @@ namespace Assets.Scripts
             if (levelEnded)
             {
                 enemyManager.EndLevelCleanUp();
+                audioManager.Play("Level End Jingle");
                 uiManager.uiScoreBreakdown.DisplayBreakdownScores();
                 currentGameState = GameState.LevelEnding;
             }
@@ -142,7 +149,7 @@ namespace Assets.Scripts
 
         private void CheckLevelEndingState()
         {
-           if (uiManager.uiScoreBreakdown.showDisplayTransitionEnded)
+            if (uiManager.uiScoreBreakdown.showDisplayTransitionEnded)
             {
                 var nextLevel = currentGameDetails.currentLevelNo + 1;
                 if (nextLevel > levelRepository.lastLevel)

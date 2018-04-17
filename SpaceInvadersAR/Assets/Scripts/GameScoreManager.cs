@@ -11,8 +11,8 @@ namespace Assets.Scripts
         {
             get
             {
-                var localPhotonPlayer = playerManager.LocalPhotonPlayer;
-                return !roomPlayersScore.ContainsKey(localPhotonPlayer.ID) ? 0 : roomPlayersScore[localPhotonPlayer.ID];
+                var localPlayerOwner = playerManager.LocalPlayerOwner;
+                return !roomPlayersScore.ContainsKey(localPlayerOwner.PlayerId) ? 0 : roomPlayersScore[localPlayerOwner.PlayerId];
             }
         }
 

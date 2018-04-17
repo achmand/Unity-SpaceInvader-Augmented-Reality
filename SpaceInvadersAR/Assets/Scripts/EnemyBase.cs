@@ -12,15 +12,29 @@ namespace Assets.Scripts
 
     public abstract class EnemyBase : MonoBehaviour, IPoolableObject
     {
-        [HideInInspector] public int enemyId; 
+        [HideInInspector] public int enemyId;
         protected abstract float Health { get; }
         public abstract EnemyType EnemyType { get; }
+        public bool isDeployedToTarget;
+
+        //public PlayerOwner targetPlayer; 
 
         private float enemyHealth { get; set; }
 
         void Awake()
         {
             enemyHealth = Health;
+        }
+
+        void Update()
+        {
+            //if (PhotonNetwork.isMasterClient)
+            //{
+            //    if (targetPlayer != null)
+            //    {
+            //        transform.LookAt(2*transform.position - targetPlayer.transform.position);
+            //    }
+            //}
         }
 
         public abstract void _TakeDamage();
@@ -47,7 +61,9 @@ namespace Assets.Scripts
         public void ResetObject()
         {
             enemyId = 0;
+            isDeployedToTarget = false;
             enemyHealth = Health;
+            //targetPlayer = null;  
         }
     }
 }
