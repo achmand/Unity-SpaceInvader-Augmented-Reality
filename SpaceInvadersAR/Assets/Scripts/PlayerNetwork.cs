@@ -1,20 +1,29 @@
-﻿using UnityEngine;
+﻿using System;
+using System.IO;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 namespace Assets.Scripts
 {
     public class PlayerNetwork : MonoBehaviour
     {
         public static PlayerNetwork Instance;
+
         public string PlayerName { get; private set; }
-        private PhotonView PhotonView;
-        private int PlayersInGame = 0;
+
+        private PhotonView photonView;
+        private int playersInGame = 0;
 
         private void Awake()
         {
             Instance = this;
-            PhotonView = GetComponent<PhotonView>();
+            photonView = GetComponent<PhotonView>();
             PlayerName = "Dylan " + Random.Range(1000, 9999);
+
+            PhotonNetwork.sendRate = 60;
+            PhotonNetwork.sendRateOnSerialize = 30;
+
             SceneManager.sceneLoaded += OnSceneFinishedLoading;
         }
 
@@ -30,18 +39,20 @@ namespace Assets.Scripts
                 {
                     NonMasterLoadedGame();
                 }
+
+                GlobalReferenceManager.GlobalInstance.clientGameManager.StartGame();
             }
         }
 
         private void MasterLoadedGame()
         {
-            PlayersInGame = 1;
-            PhotonView.RPC("RPC_LoadGameOthers", PhotonTargets.Others);
+            photonView.RPC("RPC_LoadedGameScene", PhotonTargets.MasterClient);
+            photonView.RPC("RPC_LoadGameOthers", PhotonTargets.Others);
         }
 
         private void NonMasterLoadedGame()
         {
-            PhotonView.RPC("RPC_LoadedGameScene", PhotonTargets.MasterClient);
+            photonView.RPC("RPC_LoadedGameScene", PhotonTargets.MasterClient);
         }
 
         [PunRPC]
@@ -53,11 +64,18 @@ namespace Assets.Scripts
         [PunRPC]
         private void RPC_LoadedGameScene()
         {
-            PlayersInGame++;
-            if (PlayersInGame == PhotonNetwork.playerList.Length)
+            playersInGame++;
+            if (playersInGame == PhotonNetwork.playerList.Length)
             {
                 print("All players are in the game.");
+                photonView.RPC("RPC_CreatePlayer", PhotonTargets.All);
             }
+        }
+
+        [PunRPC]
+        private void RPC_CreatePlayer()
+        {
+            PhotonNetwork.Instantiate(Path.Combine("Prefabs", "Client Player Owner"), Vector3.zero, Quaternion.identity, 0);
         }
     }
 }

@@ -17,11 +17,21 @@ namespace Assets.Scripts
 
         public void OnClickStartSync()
         {
+            if (!PhotonNetwork.isMasterClient)
+            {
+                return;
+            }
+
             PhotonNetwork.LoadLevel("ClientScene");
         }
 
         public void OnClickStartDelayed()
         {
+            if (!PhotonNetwork.isMasterClient)
+            {
+                return;
+            }
+
             PhotonNetwork.room.IsOpen = false;
             PhotonNetwork.room.IsVisible = false;
             PhotonNetwork.LoadLevel("ClientScene");

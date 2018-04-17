@@ -38,12 +38,20 @@ namespace Assets.Scripts
             }
         }
 
-        public T SpawnFromPool(Vector3 position, Quaternion rotation, Transform parent = null)
+        public T SpawnFromPool(Vector3 position, Quaternion rotation, bool useLocalTransform = false, Transform parent = null, bool worldPositionStays = true)
         {
             var pooledObject = objectPool.Count <= 0 ? Instantiate(poolableObject).GetComponent<T>() : objectPool.Dequeue();
-            pooledObject.transform.position = position;
-            pooledObject.transform.rotation = rotation;
-            pooledObject.transform.parent = parent ?? root;
+            if (!useLocalTransform)
+            {
+                pooledObject.transform.position = position;
+                pooledObject.transform.rotation = rotation;
+            }
+            else
+            {
+                pooledObject.transform.localPosition = position;
+                pooledObject.transform.localRotation = rotation;
+            }
+            pooledObject.transform.SetParent(parent ?? root, worldPositionStays);
             pooledObject.gameObject.SetActive(true);
 
             return pooledObject;
@@ -51,8 +59,9 @@ namespace Assets.Scripts
 
         public void DespawnObject(T despawnObject)
         {
-            despawnObject.gameObject.SetActive(false);
+            despawnObject.transform.SetParent(root, false);
             despawnObject.ResetObject();
+            despawnObject.gameObject.SetActive(false);
 
             objectPool.Enqueue(despawnObject);
         }

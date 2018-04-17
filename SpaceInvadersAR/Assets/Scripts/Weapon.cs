@@ -8,6 +8,7 @@ namespace Assets.Scripts
         Projectile
     }
 
+    // TODO -> I Should use a repository here !!! 
     public class Weapon : MonoBehaviour
     {
         public GameObject shootHook; 
@@ -20,9 +21,12 @@ namespace Assets.Scripts
             get { return (int) weaponType; }
         }
 
+        [HideInInspector] public int currentAmmo;
+
         // weapon details
         [Header("Weapon Details")]
         public float damage;
+        public int startingAmmo;
         public int maxAmmo;
         public float fireRate; 
 
@@ -34,6 +38,12 @@ namespace Assets.Scripts
 
         public void Initialize()
         {
+            if (startingAmmo > maxAmmo)
+            {
+                startingAmmo = maxAmmo/2;
+            }
+
+            currentAmmo = startingAmmo;
             if (weaponShootType == WeaponShootType.Hitscan)
             {
                 //lineRenderer = GetComponent<LineRenderer>();

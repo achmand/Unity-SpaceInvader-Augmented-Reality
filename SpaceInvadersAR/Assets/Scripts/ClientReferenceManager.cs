@@ -2,6 +2,7 @@
 
 namespace Assets.Scripts
 {
+     // TODO -> Move everything to global reference manager since I will not be using the Server Client networking model 
     public class ClientReferenceManager : MonoBehaviour
     {
         public static ClientReferenceManager ClientInstance;
@@ -9,6 +10,8 @@ namespace Assets.Scripts
         [HideInInspector] public VuforiaManager vuforiaManager;
         [HideInInspector] public PhoneInputManager phoneInputManager;
         [HideInInspector] public AmmoRepository ammoRepository;
+
+        // TODO -> Remove this from here.... 
         [HideInInspector] public GamePoolManager gamePoolManager;
 
         private void FindReferences()

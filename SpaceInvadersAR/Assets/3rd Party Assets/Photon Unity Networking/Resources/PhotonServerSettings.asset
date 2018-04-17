@@ -38,4 +38,11 @@ MonoBehaviour:
   - RequestForPickupTimes
   - RPC_LoadedGameScene
   - RPC_LoadGameOthers
+  - RPC_CreatePlayer
+  - RPC_ShootWeapon
+  - RPC_PLayerShootWeapon
+  - RPC_PlayerShootWeapon
+  - RPC_EnemyHit
+  - RPC_CreateEnemyCluster
+  - RPC_StartLevelAck
   DisableAutoOpenWizard: 1

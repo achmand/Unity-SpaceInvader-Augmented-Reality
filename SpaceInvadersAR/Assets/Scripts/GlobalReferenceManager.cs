@@ -1,16 +1,52 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class GlobalReferenceManager : MonoBehaviour {
+namespace Assets.Scripts
+{
+    public sealed class GlobalReferenceManager : MonoBehaviour
+    {
+        public static GlobalReferenceManager GlobalInstance;
+        
+        [HideInInspector] public ClientGameManager clientGameManager;
+        [HideInInspector] public GameTimerManager gameTimerManager;
+        [HideInInspector] public PlayerManager playerManager;
+        [HideInInspector] public GameScoreManager gameScoreManager;
+        [HideInInspector] public DamageManager damageManager;
+        [HideInInspector] public GamePoolManager gamePoolManager;
+        [HideInInspector] public EnemyPoolManager enemyPoolManager;
+        [HideInInspector] public EnemyManager enemyManager;
+        [HideInInspector] public EnemyClusterFormationRepository enemyClusterFormationRepository;
+        [HideInInspector] public LevelRepository levelRepository;
+        [HideInInspector] public UiManager uiManager;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        [HideInInspector] public RPCGameManager rpcGameManager;
+        [HideInInspector] public RPCPlayerManager rpcPlayerManager;
+        [HideInInspector] public RPCEnemyManager rpcEnemyManager;
+        [HideInInspector] public RPCDamageManager rpcDamageManager;
+
+        private void FindReferences()
+        {
+            clientGameManager = FindObjectOfType<ClientGameManager>();
+            gameTimerManager = FindObjectOfType<GameTimerManager>();
+            playerManager = FindObjectOfType<PlayerManager>();
+            gameScoreManager = FindObjectOfType<GameScoreManager>();
+            damageManager = FindObjectOfType<DamageManager>();
+            gamePoolManager = FindObjectOfType<GamePoolManager>();
+            enemyPoolManager = FindObjectOfType<EnemyPoolManager>();
+            enemyManager = FindObjectOfType<EnemyManager>();
+            enemyClusterFormationRepository = FindObjectOfType<EnemyClusterFormationRepository>();
+            levelRepository = FindObjectOfType<LevelRepository>();
+            uiManager = FindObjectOfType<UiManager>();
+
+            rpcGameManager = FindObjectOfType<RPCGameManager>();
+            rpcPlayerManager = FindObjectOfType<RPCPlayerManager>();
+            rpcEnemyManager = FindObjectOfType<RPCEnemyManager>();
+            rpcDamageManager = FindObjectOfType<RPCDamageManager>();
+        }
+
+        void Awake()
+        {
+            GlobalInstance = this;
+            FindReferences();
+        }
+    }
 }

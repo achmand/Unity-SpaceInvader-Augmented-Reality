@@ -4,9 +4,25 @@ using UnityEngine;
 namespace Assets.Scripts
 {
     [Serializable]
-    public class BulletPool : BaseObjectPool<BulletBase>
-    {
-    }
+    public class BulletPool : BaseObjectPool<BulletBase> { }
+
+    [Serializable]
+    public class EnemyClusterRowPool : BaseObjectPool<EnemyClusterRow> { }
+
+    [Serializable]
+    public class EnemySimpleDroidPool : BaseObjectPool<SimpleDroidEnemy> { }
+
+    [Serializable]
+    public class EnemyWarriorDroidPool : BaseObjectPool<WarriorDroidEnemy> { }
+
+    [Serializable]
+    public class EnemyBomberDroidPool : BaseObjectPool<BomberDroidEnemy> { }
+
+    [Serializable]
+    public class EnemyHeavyDroidPool : BaseObjectPool<HeavyDroidEnemy> { }
+
+    [Serializable]
+    public class EnemyHitParticlePool : BaseObjectPool<ParticleFx> { }
 
     public sealed class GamePoolManager : MonoBehaviour
     {
@@ -16,12 +32,26 @@ namespace Assets.Scripts
         [Header("Spawn Pools")]
         public BulletPool bulletObjectPool;
 
+        [Header("Enemy Spawn Pools")]
+        public EnemyClusterRowPool enemyClusterRowObjectPool;
+
+        public EnemySimpleDroidPool enemySimpleDroidPool;
+        public EnemyWarriorDroidPool enemyWarriorDroidPool;
+        public EnemyBomberDroidPool enemyBomberDroidPool;
+        public EnemyHeavyDroidPool enemyHeavyDroidPool;
+        public EnemyHitParticlePool enemyHitParticlePool;
+
         void Awake()
         {
             var rootTransform = rootSpawnPoolsGameObject.transform;
             bulletObjectPool.objectPooler.Initialize(bulletObjectPool.poolOptions, rootTransform);
-        }
 
-        //private ObjectPooler<BulletBase> bulletPool; 
+            enemyClusterRowObjectPool.objectPooler.Initialize(enemyClusterRowObjectPool.poolOptions, rootTransform);
+            enemySimpleDroidPool.objectPooler.Initialize(enemySimpleDroidPool.poolOptions, rootTransform);
+            enemyWarriorDroidPool.objectPooler.Initialize(enemyWarriorDroidPool.poolOptions, rootTransform);
+            enemyBomberDroidPool.objectPooler.Initialize(enemyBomberDroidPool.poolOptions, rootTransform);
+            enemyHeavyDroidPool.objectPooler.Initialize(enemyHeavyDroidPool.poolOptions, rootTransform);
+            enemyHitParticlePool.objectPooler.Initialize(enemyHitParticlePool.poolOptions, rootTransform);
+        }
     }
 }
