@@ -150,6 +150,7 @@ Transform:
   - {fileID: 494185060}
   - {fileID: 2096010118}
   - {fileID: 434911016}
+  - {fileID: 650838755}
   - {fileID: 1847914681}
   - {fileID: 413073227}
   - {fileID: 1856068849}
@@ -761,7 +762,7 @@ Transform:
   - {fileID: 1313853184}
   - {fileID: 1272272842}
   m_Father: {fileID: 96751225}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &432847985
 GameObject:
@@ -1680,6 +1681,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!4 &650838755 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4670573711631664, guid: 09b133b3b909be54ca2d751348dba372,
+    type: 2}
+  m_PrefabInternal: {fileID: 1791260945}
 --- !u!1 &664990251
 GameObject:
   m_ObjectHideFlags: 0
@@ -2961,6 +2967,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffd82b373057d7440bdd0aa7f8e42c7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lastLevel: 0
 --- !u!1 &1311863559
 GameObject:
   m_ObjectHideFlags: 0
@@ -4311,7 +4318,6 @@ MonoBehaviour:
   createNewCluster: 0
   spawnClusterScaleEasingType: 17
   spawnTimeInSeconds: 4
-  debug_DestroyCluster: 0
 --- !u!114 &1605521454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5211,6 +5217,48 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1772690255}
+--- !u!1001 &1791260945
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 96751225}
+    m_Modifications:
+    - target: {fileID: 4670573711631664, guid: 09b133b3b909be54ca2d751348dba372, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4670573711631664, guid: 09b133b3b909be54ca2d751348dba372, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4670573711631664, guid: 09b133b3b909be54ca2d751348dba372, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4670573711631664, guid: 09b133b3b909be54ca2d751348dba372, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4670573711631664, guid: 09b133b3b909be54ca2d751348dba372, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4670573711631664, guid: 09b133b3b909be54ca2d751348dba372, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4670573711631664, guid: 09b133b3b909be54ca2d751348dba372, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4670573711631664, guid: 09b133b3b909be54ca2d751348dba372, type: 2}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 09b133b3b909be54ca2d751348dba372, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &1792133140
 GameObject:
   m_ObjectHideFlags: 0
@@ -5356,7 +5404,7 @@ Transform:
   m_Children:
   - {fileID: 2009535845}
   m_Father: {fileID: 96751225}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1847914682
 MonoBehaviour:
@@ -5434,7 +5482,7 @@ Transform:
   - {fileID: 1466112159}
   - {fileID: 2113732503}
   m_Father: {fileID: 96751225}
-  m_RootOrder: 14
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1856068850
 MonoBehaviour:
@@ -5447,6 +5495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 925c3b56cdff3ff46b43ad8cd17a3683, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiScoreBreakdown: {fileID: 0}
 --- !u!1 &1867654117
 GameObject:
   m_ObjectHideFlags: 0
@@ -6049,3 +6098,4 @@ MonoBehaviour:
   difficultyText: {fileID: 1627327074}
   totalScoreText: {fileID: 1408519297}
   breakDownScoreOnScreenSeconds: 7
+  showDisplayTransitionEnded: 0
