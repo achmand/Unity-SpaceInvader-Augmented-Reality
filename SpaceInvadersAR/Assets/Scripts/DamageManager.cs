@@ -7,13 +7,17 @@ namespace Assets.Scripts
         private RPCDamageManager rpcDamageManager;
         private EnemyManager enemyManager;
         private GameScoreManager gameScoreManager;
+        private PlayerManager playerManager;
+        private AudioManager audioManager;
 
         void Awake()
         {
-            var globalReference = GlobalReferenceManager.GlobalInstance;
-            rpcDamageManager = globalReference.rpcDamageManager;
-            enemyManager = globalReference.enemyManager;
-            gameScoreManager = globalReference.gameScoreManager;
+            var components = GlobalReferenceManager.GlobalInstance;
+            rpcDamageManager = components.rpcDamageManager;
+            enemyManager = components.enemyManager;
+            gameScoreManager = components.gameScoreManager;
+            playerManager = components.playerManager;
+            audioManager = components.audioManager;
         }
 
         public void CheckPlayerShot(int playerId, PlayerOwner playerOwner)
@@ -53,6 +57,49 @@ namespace Assets.Scripts
             var enemyType = enemyHit.EnemyType;
 
             gameScoreManager.AddEnemyConflictScore(playerId, scorableActionType, enemyType);
+        }
+
+        public void PlayerTakesDamage(int playerId, int damage)
+        {
+            var playerOwner = playerManager.ResolvePlayerOwner(playerId);
+            if (playerOwner == null)
+            {
+                return; 
+            }
+
+            audioManager.Play("Player Damage Hit");
+            playerOwner.ApplyDamage(damage);
+        }
+
+        public void ApplyPlayerDamage(int playerHit, int damageApplied)
+        {
+            if (!PhotonNetwork.isMasterClient)
+            {
+                return;
+            }
+
+            var playerOwner = playerManager.ResolvePlayerOwner(playerHit);
+            if (playerOwner != null)
+            {
+                playerOwner.ApplyDamage(damageApplied);
+
+                var playerId = playerOwner.PlayerId;
+                var isLocalPlayer = playerManager.IsLocalPlayer(playerOwner.PlayerId);
+                if (!isLocalPlayer)
+                {
+                    rpcDamageManager.PlayerHit(playerId, damageApplied);
+                }
+                else
+                {
+                    audioManager.Play("Player Damage Hit");
+                }
+
+                var isPlayerHitAliveAfterDamage = playerOwner.IsAlive;
+                if (!isPlayerHitAliveAfterDamage)
+                {
+                    playerManager.PlayerDied(playerId);
+                }
+            }
         }
     }
 }

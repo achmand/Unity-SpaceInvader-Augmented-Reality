@@ -8,28 +8,34 @@ namespace Assets.Scripts
         public EnemyCluster enemyCluster;
         public bool CurrentlySpawningEnemies { get { return enemyCluster.SpawningCluster; } }
 
+        private bool CanEnemyAttack { get { return !CurrentlySpawningEnemies && !enemyCluster.IsEnemyClusterEmpty; } }
+        private CurrentGameDetails CurrentGameDetails { get { return clientGameManager.currentGameDetails; } }
+        private LevelDifficulty CurrentLevelDifficulty { get { return CurrentGameDetails.CurrentLevelDifficulty; } }
+
         private RPCEnemyManager rpcEnemyManager;
         private ClientGameManager clientGameManager;
         private CooldownTimer enemyAttackCooldownTimer;
+        private PlayerManager playerManager;
+        private ProjectileManager projectileManager;
+        private CooldownTimer attackCooldownTimer;
 
-        //private EnemyAttackCalculator enemyAttackCalculator;
-
+        private EnemyAttackCalculator enemyAttackCalculator;
         private bool initialized;
 
         public void InitializeGame()
         {
-            var globalReferenceManager = GlobalReferenceManager.GlobalInstance;
-            rpcEnemyManager = globalReferenceManager.rpcEnemyManager;
-            clientGameManager = globalReferenceManager.clientGameManager;
+            var components = GlobalReferenceManager.GlobalInstance;
+            rpcEnemyManager = components.rpcEnemyManager;
+            clientGameManager = components.clientGameManager;
+            playerManager = components.playerManager;
+            projectileManager = components.projectileManager;
 
             enemyCluster.Initialize();
-            //enemyAttackCalculator = new EnemyAttackCalculator();
-            //CreateNewClusterMaster();
+            attackCooldownTimer = new CooldownTimer(4f);
+            enemyAttackCalculator = new EnemyAttackCalculator();
 
             initialized = true;
         }
-
-        //public bool debug_shoot;
 
         void Update()
         {
@@ -43,11 +49,7 @@ namespace Assets.Scripts
                 CreateNewClusterMaster();
             }
 
-            //if (debug_shoot)
-            //{
-            //    debug_shoot = false;
-            //    InitiateProjectileAttack();
-            //}
+            EnemyAttack();
         }
 
         // returns true if enemy dies  
@@ -74,9 +76,7 @@ namespace Assets.Scripts
                 return EnemyClusterType.None;
             }
 
-            var currentGameDetails = clientGameManager.currentGameDetails;
-            var currentLevelDifficulty = currentGameDetails.CurrentLevelDifficulty;
-            var enemyClusterType = enemyCluster.CreateCluster(currentLevelDifficulty, true);
+            var enemyClusterType = enemyCluster.CreateCluster(CurrentLevelDifficulty, true);
 
             if (sendClient)
             {
@@ -88,9 +88,7 @@ namespace Assets.Scripts
 
         public void CreateNewCluster(EnemyClusterType enemyClusterType)
         {
-            var currentGameDetails = clientGameManager.currentGameDetails;
-            var currentLevelDifficulty = currentGameDetails.CurrentLevelDifficulty;
-            enemyCluster.CreateCluster(currentLevelDifficulty, false, enemyClusterType);
+            enemyCluster.CreateCluster(CurrentLevelDifficulty, false, enemyClusterType);
         }
 
         public void EndLevelCleanUp()
@@ -98,13 +96,61 @@ namespace Assets.Scripts
             enemyCluster.ClearCurrentCluster();
         }
 
-        //public float shootForce;
-        //private void InitiateProjectileAttack()
-        //{
-        //    var enemyTest = GetEnemyFromCluster(0);
-        //    var bullet = Instantiate(enemyProjectile, enemyTest.transform.position, enemyTest.transform.rotation);
-        //    var localPlayer = GlobalReferenceManager.GlobalInstance.playerManager.LocalPlayerOwner;
-        //    bullet.GetComponent<Rigidbody>().AddForce((localPlayer.transform.position - enemyTest.transform.position).normalized * shootForce);
-        //}
+        // initiate enemy attack 
+        private void EnemyAttack()
+        {
+            if (PhotonNetwork.isMasterClient)
+            {
+                if (!CanEnemyAttack)
+                {
+                    return;
+                }
+
+                if (attackCooldownTimer.CanWeDoAction())
+                {
+                    var newRandomInterval = enemyAttackCalculator.GetAttackIntervalEnemies(CurrentLevelDifficulty);
+                    attackCooldownTimer.UpdateIntervalSeconds(newRandomInterval);
+                    attackCooldownTimer.UpdateActionTime();
+
+                    var attackingEnemyId = enemyCluster.GetRandomEnemyId();
+                    var attackingEnemy = GetEnemyFromCluster(attackingEnemyId);
+                    if (attackingEnemy == null)
+                    {
+                        return;
+                    }
+
+                    var targetPlayer = playerManager.GetRandomPlayerOwner();
+                    if (targetPlayer == null)
+                    {
+                        return;
+                    }
+
+                    var targetPlayerPostion = targetPlayer.transform.position;
+                    projectileManager.FireProjectileEnemy(attackingEnemy, targetPlayerPostion);
+
+                    var targetPlayerId = targetPlayer.PlayerId;
+                    rpcEnemyManager.EnemyFire(attackingEnemyId, targetPlayerId);
+                }
+            }
+        }
+
+        // initiate enemy attack on client
+        public void EnemyAttackClient(int attackingEnemyId, int playerTarget)
+        {
+            var attackingEnemy = GetEnemyFromCluster(attackingEnemyId);
+            if (attackingEnemy == null)
+            {
+                return;
+            }
+
+            var targetPlayer = playerManager.ResolvePlayerOwner(playerTarget);
+            if (targetPlayer == null)
+            {
+                return;
+            }
+
+            var targetPlayerPostion = targetPlayer.transform.position;
+            projectileManager.FireProjectileEnemy(attackingEnemy, targetPlayerPostion);
+        }
     }
 }

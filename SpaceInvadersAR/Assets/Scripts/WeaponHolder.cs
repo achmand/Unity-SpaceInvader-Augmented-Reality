@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -15,14 +14,11 @@ namespace Assets.Scripts
 
         private Dictionary<WeaponType, Weapon> weaponsCollection;
 
-        private AmmoRepository ammoRepository;
+        //private AmmoRepository ammoRepository;
         private CooldownTimer nextFireCooldownTimer;
 
         void Awake()
         {
-            var components = ClientReferenceManager.ClientInstance;
-            ammoRepository = components.ammoRepository;
-
             // TODO -> For now only 
             ActiveWeaponIdentitifier = 1;
 

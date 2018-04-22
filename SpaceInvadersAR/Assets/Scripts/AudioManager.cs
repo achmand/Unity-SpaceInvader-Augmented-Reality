@@ -56,5 +56,16 @@ namespace Assets.Scripts
             currentTheme = currentLevel;
             currentTheme.source.Play();
         }
+
+        public void PlayTheme()
+        {
+            if (currentTheme != null)
+            {
+                currentTheme.source.Stop();
+            }
+
+            currentTheme = soundClipCollection["Game Theme"];
+            currentTheme.source.Play();
+        }
     }
 }

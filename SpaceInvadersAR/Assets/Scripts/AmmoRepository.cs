@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
+    // NOT IN USE !!!
     public sealed class AmmoRepository : MonoBehaviour
     {
         private Dictionary<WeaponType, AmmoRepositoryItem> collection;
@@ -12,11 +13,9 @@ namespace Assets.Scripts
 
         void Awake()
         {
-            var components = ClientReferenceManager.ClientInstance;
-            //var vuforiaManager = components.vuforiaManager;
-            //backgroundImageTargetBehaviour = vuforiaManager.backgroundImageTargetBehaviour;
-            bulletPool = components.gamePoolManager.bulletObjectPool;
-
+            var components = GlobalReferenceManager.GlobalInstance;
+            var gamePoolManager = components.gamePoolManager;
+            bulletPool = gamePoolManager.bulletObjectPool;
             collection = new Dictionary<WeaponType, AmmoRepositoryItem>(WeaponTypeEqualityComparer.Default);
 
             var items = GetComponentsInChildren<AmmoRepositoryItem>();

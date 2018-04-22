@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Assets.Scripts
 {
@@ -6,12 +7,20 @@ namespace Assets.Scripts
     {
         [ShowOnly] public bool Spawned;
         [ShowOnly] public float Health;
+        [ShowOnly] public float maxHealth = 100f;
+
+        //public event EventHandler OnPlayerDied;
 
         public bool IsAlive { get { return Health > 0f; } }
 
         public bool SpawnedAndAlive
         {
             get { return Spawned && IsAlive; }
+        }
+
+        public float HealthUnitInterval
+        {
+            get { return Health / maxHealth; }
         }
 
         public Transform ArActiveCameraTransform
@@ -22,7 +31,18 @@ namespace Assets.Scripts
             }
         }
 
-        public int PlayerId { get { return photonPlayer.ID; } }
+        public int PlayerId
+        {
+            get
+            {
+                if (photonPlayer != null)
+                {
+                    return photonPlayer.ID;
+                }
+
+                return -1;
+            }
+        }
 
         public WeaponHolder weaponHolder;
 
@@ -38,7 +58,7 @@ namespace Assets.Scripts
 
         private void FindReferences()
         {
-            var components = ClientReferenceManager.ClientInstance;
+            var components = GlobalReferenceManager.GlobalInstance;
             playerMovement = GetComponent<PlayerMovement>();
             weaponHolder = GetComponent<WeaponHolder>();
             photonView = GetComponent<PhotonView>();
@@ -55,6 +75,7 @@ namespace Assets.Scripts
         public void Initialize()
         {
             FindReferences();
+            Health = maxHealth;
             initialized = true;
         }
 
@@ -112,37 +133,35 @@ namespace Assets.Scripts
         // when a new player owner get instantiated
         void OnPhotonInstantiate(PhotonMessageInfo info)
         {
-            var globalReferenceManager = GlobalReferenceManager.GlobalInstance;
-            var playerManager = globalReferenceManager.playerManager;
-            photonPlayer = info.sender;
+            var components = GlobalReferenceManager.GlobalInstance;
+            var playerManager = components.playerManager;
 
+            photonPlayer = info.sender;
             playerManager.AddPlayer(this);
             Initialize();
         }
 
-        //[PunRPC]
-        //private void RPC_PlayerShootWeapon(int playerId)
-        //{
-        //    var photonPlayer = PhotonNetwork.playerList.SingleOrDefault(p => p.ID == playerId);
-        //    if (photonPlayer == null)
-        //    {
-        //        return;
-        //    }
+        public void ApplyDamage(int damage)
+        {
+            var healthAfterDamage = Health - damage;
+            if (healthAfterDamage > 0)
+            {
+                Health = healthAfterDamage;
+            }
+            else
+            {             
+                SetPlayerDead();
+                Health = 0f;
+            }
+        }
 
-        //    var arCameraTransform = arActiveCamera.transform;
-
-        //    RaycastHit hit;
-        //    Debug.DrawRay(arCameraTransform.position, arCameraTransform.forward * 100f, Color.green, 2f);
-        //    if (Physics.Raycast(arCameraTransform.position, arCameraTransform.forward, out hit, 100f))
-        //    {
-        //        var enemyTarget = hit.transform.GetComponent<EnemyBase>();
-        //        if (enemyTarget != null)
-        //        {
-        //            var damage = weaponHolder.ActiveWeapon.damage;
-        //           enemyTarget.TakeDamage(damage);
-        //            Debug.Log(hit.transform.name);
-        //        }
-        //    }
-        //}
+        private void SetPlayerDead()
+        {
+            //if (OnPlayerDied != null)
+            //{
+            //    OnPlayerDied(this, new EventArgs());
+            //}
+            gameObject.SetActive(false);
+        }
     }
 }

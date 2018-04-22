@@ -14,7 +14,7 @@ namespace Assets.Scripts
         public Text totalScoreText;
         public float breakDownScoreOnScreenSeconds;
 
-        public bool showDisplayTransitionEnded; 
+        [HideInInspector] public bool showDisplayTransitionEnded; 
         //public bool debug_ShowbreakdownScore;
 
         private ClientGameManager clientGameManager;
@@ -22,9 +22,9 @@ namespace Assets.Scripts
 
         void Awake()
         {
-            var globalReferenceManager = GlobalReferenceManager.GlobalInstance;
-            clientGameManager = globalReferenceManager.clientGameManager;
-            gameScoreManager = globalReferenceManager.gameScoreManager;
+            var components = GlobalReferenceManager.GlobalInstance;
+            clientGameManager = components.clientGameManager;
+            gameScoreManager = components.gameScoreManager;
         }
 
         //void Update()

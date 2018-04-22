@@ -3,10 +3,10 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts
 {
-    // TODO -> USE COMMONGLOBAVARIABLES FOR MAXPLAYERS 
     public class UiCreateRoom : MonoBehaviour
     {
         public Button createRoomButton;
+        public Text usernameText;
 
         [SerializeField] private Text roomName;
         private Text RoomName
@@ -19,11 +19,21 @@ namespace Assets.Scripts
             createRoomButton.onClick.AddListener(OnClick_CreateRoom);
         }
 
+        void Update()
+        {
+            createRoomButton.interactable = !string.IsNullOrEmpty(RoomName.text);
+        }
+
         public void OnClick_CreateRoom()
         {
             if (string.IsNullOrEmpty(RoomName.text))
             {
                 return;
+            }
+
+            if (!string.IsNullOrEmpty(usernameText.text))
+            {
+                PhotonNetwork.playerName = usernameText.text;
             }
 
             var roomOptions = new RoomOptions {IsVisible = true, IsOpen = true, MaxPlayers = 4};

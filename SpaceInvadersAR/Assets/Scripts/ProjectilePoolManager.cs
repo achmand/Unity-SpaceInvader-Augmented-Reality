@@ -10,7 +10,6 @@ namespace Assets.Scripts
         {
             var globalReferenceManager = GlobalReferenceManager.GlobalInstance;
             var gamePoolManager = globalReferenceManager.gamePoolManager;
-
             simpleProjectilePooler = gamePoolManager.simpleProjectilePool.objectPooler;
         }
 
@@ -23,6 +22,16 @@ namespace Assets.Scripts
             }
 
             return null;
+        }
+
+        public void DespawnProjectile(ProjectileType enemyType, Projectile projectile)
+        {
+            switch (enemyType)
+            {
+                case ProjectileType.SimpleProjectile:
+                    simpleProjectilePooler.DespawnObject((SimpleProjectile)projectile);
+                    break; 
+            }
         }
     }
 }

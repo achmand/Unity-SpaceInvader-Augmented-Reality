@@ -25,5 +25,16 @@ namespace Assets.Scripts
         {
             damageManager.EnemyTakesDamage(playerId, enemyId, damage);
         }
+
+        public void PlayerHit(int playerId, int damage)
+        {
+            photonView.RPC("RPC_PlayerHit", PhotonTargets.Others, playerId, damage);
+        }
+
+        [PunRPC]
+        private void RPC_PlayerHit(int playerId, int damage)
+        {
+            damageManager.PlayerTakesDamage(playerId, damage);
+        }
     }
 }

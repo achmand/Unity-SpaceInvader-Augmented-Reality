@@ -12,9 +12,10 @@ namespace Assets.Scripts
         private ObjectPooler<BomberDroidEnemy> bomberDroidPooler;
         private ObjectPooler<HeavyDroidEnemy> heavyDroidPooler;
 
-        private ObjectPooler<ParticleFx> enemyHitFxPooler;
+        private ObjectPooler<EnemyParticleFx> enemyHitFxPooler;
+        private ObjectPooler<EnemyParticleFx> enemyShootAlertFxPooler;
 
-        private Queue<ParticleFx> queuedFxDespawns;
+        private Queue<EnemyParticleFx> queuedFxDespawns;
 
         void Awake()
         {
@@ -27,9 +28,11 @@ namespace Assets.Scripts
             warriorDroidPooler = gamePoolManager.enemyWarriorDroidPool.objectPooler;
             bomberDroidPooler = gamePoolManager.enemyBomberDroidPool.objectPooler;
             heavyDroidPooler = gamePoolManager.enemyHeavyDroidPool.objectPooler;
-            enemyHitFxPooler = gamePoolManager.enemyHitParticlePool.objectPooler;
 
-            queuedFxDespawns = new Queue<ParticleFx>();
+            enemyHitFxPooler = gamePoolManager.enemyHitParticlePool.objectPooler;
+            enemyShootAlertFxPooler = gamePoolManager.enemyShootAlertParticlePool.objectPooler;
+
+            queuedFxDespawns = new Queue<EnemyParticleFx>();
         }
 
         void Update()
@@ -84,13 +87,30 @@ namespace Assets.Scripts
             }
         }
 
-        public ParticleFx SpawnHitFx(Vector3 position, Quaternion rotation, bool useLocalTransform = false, Transform parent = null, bool worldPositionStays = true)
+        public ParticleFx SpawnHitFx(EnemyAction enemyAction, Vector3 position, Quaternion rotation, bool useLocalTransform = false, Transform parent = null, bool worldPositionStays = true)
         {
-            var hitFx = enemyHitFxPooler.SpawnFromPool(position, rotation, useLocalTransform, parent, worldPositionStays);
-            hitFx.timeToDespawn = Time.time + hitFx.lifeTimeInSeconds;
-            queuedFxDespawns.Enqueue(hitFx);
+            EnemyParticleFx particleFx = null;
+            switch (enemyAction)
+            {
+                case EnemyAction.DamageHit:
+                    particleFx = enemyHitFxPooler.SpawnFromPool(position, rotation, useLocalTransform, parent, worldPositionStays);
+                    break;
+                case EnemyAction.Died: // TODO -> Add Dead Particle Effects 
+                    particleFx = enemyHitFxPooler.SpawnFromPool(position, rotation, useLocalTransform, parent, worldPositionStays);
+                    break;
+                case EnemyAction.Shoot:
+                    particleFx = enemyShootAlertFxPooler.SpawnFromPool(position, rotation, useLocalTransform, parent, worldPositionStays);
+                    break;
+            }
 
-            return hitFx;
+            if (particleFx == null)
+            {
+                return null;
+            }
+
+            particleFx.timeToDespawn = Time.time + particleFx.lifeTimeInSeconds;
+            queuedFxDespawns.Enqueue(particleFx);
+            return particleFx;
         }
 
         // TODO -> Should I write a generic despawner ??
@@ -105,7 +125,14 @@ namespace Assets.Scripts
             if (firstDespawn.timeToDespawn <= Time.time)
             {
                 queuedFxDespawns.Dequeue();
-                enemyHitFxPooler.DespawnObject(firstDespawn);
+                if (firstDespawn.enemyAction == EnemyAction.DamageHit)
+                {
+                    enemyHitFxPooler.DespawnObject(firstDespawn);
+                }
+                if (firstDespawn.enemyAction == EnemyAction.Shoot)
+                {
+                    enemyShootAlertFxPooler.DespawnObject(firstDespawn);
+                }
             }
         }
     }

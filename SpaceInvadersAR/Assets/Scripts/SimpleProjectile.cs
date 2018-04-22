@@ -2,24 +2,24 @@
 {
     public sealed class SimpleProjectile : Projectile
     {
+        public override float timeBeforeDespawnSeconds
+        {
+            get { return 3f; }
+        }
+
         public override ProjectileType projectileType
         {
             get { return ProjectileType.SimpleProjectile; }
         }
 
-        public override float projectileForce
+        protected override float projectileForce
         {
             get { return 40f; }
         }
 
         public override int projectileDamage
         {
-            get { return 30; }
-        }
-
-        public override float timeBeforeDespawnSeconds
-        {
-            get { return 3f; }
+            get { return 25; }
         }
     }
 }

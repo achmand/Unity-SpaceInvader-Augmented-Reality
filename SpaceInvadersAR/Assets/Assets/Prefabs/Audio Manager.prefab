@@ -1,0 +1,102 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1366434068462410}
+  m_IsPrefabParent: 1
+--- !u!1 &1366434068462410
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4618501395126618}
+  - component: {fileID: 114496508958450770}
+  m_Layer: 0
+  m_Name: Audio Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4618501395126618
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1366434068462410}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114496508958450770
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1366434068462410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe0d25ed25834cb4ab36d9c8dc606d6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundClips:
+  - name: Laser Shot
+    audioClip: {fileID: 8300000, guid: 37804b17b9d91774f9772a3a09226a2a, type: 3}
+    volume: 0.47
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Level End Jingle
+    audioClip: {fileID: 8300000, guid: e1977df57a978a64db666eba4ece41ff, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Level Start Jingle
+    audioClip: {fileID: 8300000, guid: 06f897773df152c48a8df6fb513b36c4, type: 3}
+    volume: 0.37
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Game Theme
+    audioClip: {fileID: 8300000, guid: 754b9de93adb5554f9e8984931b7abf6, type: 3}
+    volume: 0.228
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: Player Damage Hit
+    audioClip: {fileID: 8300000, guid: ab76456ad3c1ca94a803e2635fbd48e6, type: 3}
+    volume: 0.604
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Enemy Shoot
+    audioClip: {fileID: 8300000, guid: 52d9dea17ba2569448a73c2a755a5ae0, type: 3}
+    volume: 0.29
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Game Over
+    audioClip: {fileID: 8300000, guid: bb4e6598abf754545a793ba970c125e5, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Game Ended
+    audioClip: {fileID: 8300000, guid: 96758695d58f0f449a7f9b891e45c13f, type: 3}
+    volume: 0.5
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}

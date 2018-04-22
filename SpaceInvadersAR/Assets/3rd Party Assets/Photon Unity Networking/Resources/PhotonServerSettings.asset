@@ -45,4 +45,6 @@ MonoBehaviour:
   - RPC_EnemyHit
   - RPC_CreateEnemyCluster
   - RPC_StartLevelAck
+  - RPC_PlayerHit
+  - RPC_EnemyFire
   DisableAutoOpenWizard: 1

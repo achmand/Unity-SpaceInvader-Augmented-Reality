@@ -17,7 +17,7 @@ namespace Assets.Scripts
 
         void Awake()
         {
-            var components = ClientReferenceManager.ClientInstance;
+            var components = GlobalReferenceManager.GlobalInstance;
             arCamera = components.vuforiaManager.arCamera;
         }
 

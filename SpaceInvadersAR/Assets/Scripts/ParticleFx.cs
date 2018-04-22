@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts
 {
-    public sealed class ParticleFx : MonoBehaviour, IPoolableObject
+    public class ParticleFx : MonoBehaviour, IPoolableObject
     {
         public float lifeTimeInSeconds;
 
@@ -32,7 +32,7 @@ namespace Assets.Scripts
 
         public void ResetObject()
         {
-            timeToDespawn = 0;
+            timeToDespawn = 0f;
             ResetParticleSystem();
         }
     }

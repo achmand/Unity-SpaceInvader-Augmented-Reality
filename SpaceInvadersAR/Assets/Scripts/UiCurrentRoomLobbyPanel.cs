@@ -6,23 +6,16 @@ namespace Assets.Scripts
     public sealed class UiCurrentRoomLobbyPanel : MonoBehaviour
     {
         public RectTransform currentRoomRectTransform;
-        public Button startGameSyncButton;
         public Button startGameDelayButton;
 
         void Awake()
         {
-            startGameSyncButton.onClick.AddListener(OnClickStartSync);
             startGameDelayButton.onClick.AddListener(OnClickStartDelayed);
         }
 
-        public void OnClickStartSync()
+        void Update()
         {
-            if (!PhotonNetwork.isMasterClient)
-            {
-                return;
-            }
-
-            PhotonNetwork.LoadLevel("ClientScene");
+            startGameDelayButton.interactable = PhotonNetwork.isMasterClient;
         }
 
         public void OnClickStartDelayed()

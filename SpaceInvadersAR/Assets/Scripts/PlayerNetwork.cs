@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
@@ -13,13 +12,13 @@ namespace Assets.Scripts
         public string PlayerName { get; private set; }
 
         private PhotonView photonView;
-        public int playersInGame = 0;
+        public int playersInGame;
 
         private void Awake()
         {
             Instance = this;
             photonView = GetComponent<PhotonView>();
-            PlayerName = "Dylan " + Random.Range(1000, 9999);
+            PlayerName = "Player " + Random.Range(1000, 9999);
 
             PhotonNetwork.sendRate = 60;
             PhotonNetwork.sendRateOnSerialize = 30;

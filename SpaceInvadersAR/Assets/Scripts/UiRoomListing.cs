@@ -19,7 +19,7 @@ namespace Assets.Scripts
 
         void Start()
         {
-            var uiRoomLobbyPanel = MenuManager.Instance.uiMenuPanel.UiRoomLobbyPanel;
+            var uiRoomLobbyPanel = MenuManager.Instance.uiRoomLobbyPanel;
             if (uiRoomLobbyPanel == null)
             {
                 return;

@@ -20,6 +20,11 @@ namespace Assets.Scripts
             lastActionDone = true;
         }
 
+        public void UpdateIntervalSeconds(float intervalSeconds)
+        {
+            IntervalSeconds = intervalSeconds;
+        }
+
         public bool CanWeDoAction()
         {
             var canWeDoAction = true;

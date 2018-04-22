@@ -6,7 +6,7 @@ SceneListEnd?
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.PunTeams
 4d0187d1ee26ceba125a106f0dde0360 Assembly-CSharp.dll:.SmoothSyncMovement
 7ba1e84ad3d2d8813486668e75f842ce Assembly-CSharp-firstpass.dll:UnityStandardAssets.Effects.ExtinguishableParticleSystem
-379010c2ebdc093172075c1dee93d80e Assembly-CSharp.dll:Assets.Scripts.UiCurrentRoomLobbyPanel
+178e79f36f064bbdd1498f07e4900c90 Assembly-CSharp.dll:Assets.Scripts.UiCurrentRoomLobbyPanel
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationPlayableAsset
 dbc29a6f2739d277c10da432d73adb6d UnityEngine.Timeline.dll:UnityEngine.Timeline.ActivationTrack
 8144169769d51429c4aedc8b0f92d47b UnityEngine.Timeline.dll:UnityEngine.Timeline.AnimationPlayableAsset
@@ -24,6 +24,7 @@ b027659a510ae8d01d6d5f31baf9827a Assembly-CSharp.dll:.PhotonStatsGui
 7ba1e84ad3d2d8813486668e75f842ce Assembly-CSharp-firstpass.dll:UnityStandardAssets.Effects.ParticleSystemMultiplier
 b302085e725b49a1a3b14781142b8f3e Assembly-CSharp.dll:Assets.Scripts.ParticleFx
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:Assets.Scripts.DontDestroyOnLoadTemplate
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:Assets.Scripts.ProjectileManager
 430c1729d7a445aa5df470ced463fca9 Assembly-CSharp-firstpass.dll:UnityStandardAssets.Effects.ExplosionPhysicsForce
 48d5c07a48c2c31d9b63afe71c3dc1e7 Assembly-CSharp.dll:Assets.Scripts.PlayerMovement
 19d9a6487d54b9dd99d0cf09c5411bec Assembly-CSharp.dll:Assets.Scripts.Weapon
@@ -101,6 +102,7 @@ c63db43c730fa2cbb8ca07de15898cb6 UnityEngine.UI.dll:UnityEngine.UI.Toggle
 f61c0793411f10cf5fbfa1473fef5ef2 UnityEngine.UI.dll:UnityEngine.UI.ToggleGroup
 86d36c43c53541d667100dc90b89cfba UnityEngine.UI.dll:UnityEngine.EventSystems.TouchInputModule
 1b8c02d0aa82fbf036a2b9b2d713eec3 UnityEngine.UI.dll:UnityEngine.UI.VerticalLayoutGroup
+88a6bb01ec901829538021a26d60fb46 Assembly-CSharp.dll:Assets.Scripts.EnemyParticleFx
 05150f5f2154a09a342200db6c430dab Assembly-CSharp.dll:Assets.Scripts.AmmoRepositoryItem
 06a7c7079fa0a7ea37c75d6686628aec Assembly-CSharp.dll:.PhotonHandler
 6c156248975c65e334daa4cbfba64bd1 Assembly-CSharp-firstpass.dll:UnityStandardAssets.Utility.TimedObjectActivator
@@ -141,7 +143,7 @@ c2d15b04283157b00cbdbfaf16c18482 Assembly-CSharp.dll:.PickupItemSyncer
 090584907af2e462994cc893ced507b3 Assembly-CSharp.dll:.PhotonRigidbody2DView
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.OnStartDelete
 1de5b0589e6fb98c8b8d7fcded724e3b Assembly-CSharp.dll:.CullArea
-3f41e55772a8dae6c8e29144dc7983d4 Assembly-CSharp.dll:Assets.Scripts.PlayerOwner
+42ee7b65373b82ad4cc28b905ad1f881 Assembly-CSharp.dll:Assets.Scripts.PlayerOwner
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.PunPlayerScores
 d7c3cc9e6aeec9a00634f6abffbe35e2 Assembly-CSharp.dll:.ConnectAndJoinRandom
 322cb40e1e282f28af980cbef7922a90 UnityEngine.Analytics.dll:UnityEngine.Analytics.AnalyticsEventTracker
@@ -155,9 +157,10 @@ bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.Audi
 463516d5b5fe8e67a0a24c48f2095b04 UnityEngine.HoloLens.dll:UnityEngine.EventSystems.HoloLensInputModule
 c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingCollider
 45f3431f0103c41611e8d4eec3d439df UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingRenderer
+70f004a1ebec4586e9a531301e2a76f6 Assembly-CSharp.dll:Assets.Scripts.UiHealthBarHp
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UnityStandardAssets.Utility.DragRigidbody
 78ebae5ed9b3edeb216da437b99754a4 Assembly-CSharp-firstpass.dll:UnityStandardAssets.CrossPlatformInput.Joystick
-8e80866218d9c3f10a8731b761f0eeca Assembly-CSharp.dll:Assets.Scripts.MenuManager
+723f6b0611c468d92398315940fec1b0 Assembly-CSharp.dll:Assets.Scripts.MenuManager
 26215f135eeb48d8fa1189498c107f6c Vuforia.UnityExtensions.dll:Vuforia.AnchorBehaviour
 0561521e336e270e6e5a9c61387cb838 Vuforia.UnityExtensions.dll:Vuforia.AnchorInputListenerBehaviour
 2e0fd93f459db951da0e2e94e2e33fb7 Vuforia.UnityExtensions.dll:Vuforia.AnchorStageBehaviour
@@ -243,7 +246,7 @@ fe76270bd84ec3b6f2f6f92c69cf69da Assembly-CSharp-firstpass.dll:UnityStandardAsse
 4ce2b1853c9a392b036a6a654be90ccb Assembly-CSharp.dll:.OnClickInstantiate
 a7d3c6c6948d99dd4116e659ddcf5ac4 Assembly-CSharp-firstpass.dll:UnityStandardAssets.CrossPlatformInput.ButtonHandler
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:Assets.Scripts.PhoneInputManager
-2c1cf4e477c5d62dbe1cf8d6f2fc037b Assembly-CSharp.dll:Assets.Scripts.UiPlayerLayoutGroup
+23e5b96f3c8ecc804d867e5d653e2b1f Assembly-CSharp.dll:Assets.Scripts.UiPlayerLayoutGroup
 a90e94673f50d2237c1b971c138660c6 Assembly-CSharp-firstpass.dll:UnityStandardAssets.Utility.AutoMoveAndRotate
 37b7399eeffc160079b93d1386b69366 Assembly-CSharp.dll:Assets.Scripts.LevelRepository
 090584907af2e462994cc893ced507b3 Assembly-CSharp.dll:.PhotonRigidbodyView
@@ -261,9 +264,10 @@ ada54cb428213a7e0c4b986e95788f97 Assembly-CSharp.dll:.PhotonTransformView
 c0ad1fb5d400aa83cb257e5f6c3714cf Assembly-CSharp.dll:.OnClickDestroy
 e97ff9540a49b92b779792c195839d33 Assembly-CSharp-firstpass.dll:UnityStandardAssets.Effects.AfterburnerPhysicsForce
 b4de94d4eb2fb0c6b6fe10b98fe9f903 Assembly-CSharp.dll:Assets.Scripts.UiPlayerListing
-2e3a69b8c26ddd8b90fe23b9544863a6 Assembly-CSharp.dll:Assets.Scripts.UiRoomLobbyPanel
+0e93fab056823c02168492fcdec476b0 Assembly-CSharp.dll:Assets.Scripts.UiRoomLobbyPanel
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:Assets.Scripts.DamageManager
-b6e944ac3af1095926f994ff75b868a3 Assembly-CSharp.dll:Assets.Scripts.UiMenuPanel
+c707132479d74213dc0e661728875539 Assembly-CSharp.dll:Assets.Scripts.UiMenuPanel
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:Assets.Scripts.ProjectilePoolManager
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UnityStandardAssets.Effects.FireLight
 5f4713b21b026722e9db96a87f8d8637 Assembly-CSharp.dll:Assets.Scripts.BomberDroidEnemy
 606b5e38dbf26156bfaf1e008fdd6e2c Assembly-CSharp.dll:Assets.Scripts.LobbyNetwork
@@ -311,6 +315,7 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.Spa
 45f3431f0103c41611e8d4eec3d439df UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingRenderer
 ee8540d1efea9148410a914295c889e3 Assembly-CSharp.dll:.OnJoinedInstantiate
 d7e95267ce982c4c8828cb05fb2069ed Assembly-CSharp.dll:Assets.Scripts.UiLevelTimer
+a82d367b79a8b9529290a3d5afc41fb2 Assembly-CSharp.dll:Assets.Scripts.SimpleProjectile
 ab232dc3d94359ca42eabb9c72cbbb82 Assembly-CSharp-firstpass.dll:UnityStandardAssets.Effects.WaterHoseParticles
 6b7f3b627f03aa2dae54ad0ecb0a7d7a Assembly-CSharp.dll:.PhotonLagSimulationGui
 9de3a22eca9aefadba2d10d5987cefe3 UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
@@ -319,7 +324,7 @@ c9576c6a51e2e71bc5caab85a96801e8 Assembly-CSharp-firstpass.dll:UnityStandardAsse
 db3b233e35a88802fed1717d19c3d9ec Assembly-CSharp-firstpass.dll:UnityStandardAssets.Utility.FollowTarget
 5f4713b21b026722e9db96a87f8d8637 Assembly-CSharp.dll:Assets.Scripts.SimpleDroidEnemy
 5cefd753b3f79030472f0c1f7b6bdc74 Assembly-CSharp.dll:Assets.Scripts.UiScoreBreakdown
-8d2b62054bf189821c78eea1e0749a97 Assembly-CSharp.dll:Assets.Scripts.GlobalReferenceManager
+9b1adef6d20c404c8e934a731bb1ffe1 Assembly-CSharp.dll:Assets.Scripts.GlobalReferenceManager
 a8796ecdc9d5c260bbe32f30c4b10708 Assembly-CSharp-firstpass.dll:UnityStandardAssets.CrossPlatformInput.TouchPad
 ec0082b40adf3b0930cd87250ffdbf1d Assembly-CSharp.dll:.SupportLogger
 0ad469aca31264c6140b1e503c43ab6b Assembly-CSharp-firstpass.dll:UnityStandardAssets.Utility.TimedObjectDestructor
@@ -328,11 +333,10 @@ f0817799adc2fe5a5e307dc0595ee833 Assembly-CSharp.dll:Assets.Scripts.Planet
 298901e5fd6ccf8cd5b55cb6018e6abe Assembly-CSharp.dll:.PickupItemSimple
 08712033bfb8d4fd2842041f9a20ded7 Assembly-CSharp.dll:.ManualPhotonViewAllocator
 f4b175ffc1eeca85d2783436b4c764a7 Assembly-CSharp-firstpass.dll:UnityStandardAssets.Effects.Explosive
-fbc0648331d7b186568043b834f288b2 Assembly-CSharp.dll:Assets.Scripts.UiCreateRoom
+3f08e3e84fc9abd12a7f97c50877e845 Assembly-CSharp.dll:Assets.Scripts.UiCreateRoom
 7ea685db8ea74e0fd44569efd455c8bd Assembly-CSharp.dll:Assets.Scripts.AudioManager
 d1755adc44fcb9e44c42a5889d35f7a0 Assembly-CSharp.dll:.MoveByKeys
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.QuitOnEscapeOrBack
-ffea4bbd7627df883c9d1957f2b4c20a Assembly-CSharp.dll:Assets.Scripts.ClientReferenceManager
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:UnityStandardAssets.Utility.FPSCounter
 604f5f55c1cc414f64da1990b36ff015 Assembly-CSharp.dll:.PhotonView
 b2dc25029b6f083ffbbdf9df269f825a Assembly-CSharp.dll:.InRoomChat
@@ -372,7 +376,7 @@ d2a2bd333db22f480a8589e167314ecc Vuforia.UnityExtensions.dll:Vuforia.UserDefined
 3d1b89310e77c34bc0c8d7132231345c Vuforia.UnityExtensions.dll:Vuforia.WireframeBehaviour
 05524b8f659e7bfe5756d1335fec24ba Vuforia.UnityExtensions.dll:Vuforia.WireframeTrackableEventHandler
 15bea26698002c6c4a3087131232ce5c Vuforia.UnityExtensions.dll:Vuforia.WordBehaviour
-55a28ffcbd8b188c863a5fa1210e8ae3 Assembly-CSharp.dll:Assets.Scripts.GamePoolManager
+cda1e787039d7c9794bae3888e590fa9 Assembly-CSharp.dll:Assets.Scripts.GamePoolManager
 26215f135eeb48d8fa1189498c107f6c Vuforia.UnityExtensions.dll:Vuforia.AnchorBehaviour
 0561521e336e270e6e5a9c61387cb838 Vuforia.UnityExtensions.dll:Vuforia.AnchorInputListenerBehaviour
 2e0fd93f459db951da0e2e94e2e33fb7 Vuforia.UnityExtensions.dll:Vuforia.AnchorStageBehaviour

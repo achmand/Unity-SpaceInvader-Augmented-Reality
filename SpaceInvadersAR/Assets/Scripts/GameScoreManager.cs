@@ -12,6 +12,11 @@ namespace Assets.Scripts
             get
             {
                 var localPlayerOwner = playerManager.LocalPlayerOwner;
+                if (localPlayerOwner == null)
+                {
+                    return 0;
+                }
+
                 return !roomPlayersScore.ContainsKey(localPlayerOwner.PlayerId) ? 0 : roomPlayersScore[localPlayerOwner.PlayerId];
             }
         }

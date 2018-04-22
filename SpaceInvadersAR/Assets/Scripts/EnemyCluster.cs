@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -12,10 +13,13 @@ namespace Assets.Scripts
 
         [HideInInspector]
         public bool createNewCluster;
+
         public EasingTypes spawnClusterScaleEasingType;
         public float spawnTimeInSeconds;
 
         public bool SpawningCluster { get { return scaleEasingApplier.IsEasing; } }
+        public bool IsEnemyClusterEmpty { get { return currentEnemyCluster.Count <= 0;  } }
+        //public bool ClusterReadyToAttack {get {return !SpawningCluster && } }
 
         //public bool debug_DestroyCluster;
 
@@ -33,7 +37,7 @@ namespace Assets.Scripts
         private int currentClusterDeadCounter;
         private int currentClusterCounter;
 
-        private CooldownTimer targetChangeCooldownTimer;
+        //private CooldownTimer targetChangeCooldownTimer;
 
         private bool initialized;
 
@@ -51,7 +55,6 @@ namespace Assets.Scripts
             currentEnemyCluster = new Dictionary<int, EnemyBase>(Int32EqualityComparer.Default);
             currentEnemyClusterRows = new List<EnemyClusterRow>();
             scaleEasingApplier = new FloatEasingApplier();
-            targetChangeCooldownTimer = new CooldownTimer(15f);
             initialized = true;
         }
 
@@ -61,27 +64,6 @@ namespace Assets.Scripts
             {
                 return;
             }
-
-            //if (debug_DestroyCluster)
-            //{
-            //    debug_DestroyCluster = false;
-            //    foreach (var enemy in currentEnemyCluster)
-            //    {
-            //        enemy.Value.TakeDamage(100f);
-            //        enemyPoolManager.DespawnEnemy(enemy.Value);
-            //        currentClusterDeadCounter++;
-            //    }
-            //}
-
-            // changes targets every 15 seconds 
-            //if (PhotonNetwork.isMasterClient)
-            //{
-            //    if (targetChangeCooldownTimer.CanWeDoAction())
-            //    {
-            //        targetChangeCooldownTimer.UpdateActionTime();
-            //        SetRandomTargets();
-            //    }
-            //}
 
             scaleEasingApplier.ManualUpdate();
             if (scaleEasingApplier.IsEasing)
@@ -106,57 +88,70 @@ namespace Assets.Scripts
             return type;
         }
 
+        // TODO -> Fix daimond formation
         private void CreateCluster(LevelDifficulty levelDifficulty, EnemyClusterType enemyClusterType)
         {
             ClearCurrentCluster();
             transform.localScale = Vector3.zero;
 
             var enemyClusterFormation = enemyClusterFormationRepository.GetEnemyClusterFormationInfo(levelDifficulty, enemyClusterType);
-            var formationHeight = enemyClusterFormation.height;
-            var formationWidth = enemyClusterFormation.width;
 
-            if (enemyClusterType == EnemyClusterType.Square || enemyClusterType == EnemyClusterType.Rectangle)
+            var enemyClusterHeight = enemyClusterFormation.height;
+            var enemyClusterWidth = enemyClusterFormation.width;
+
+            var formationHeight = enemyClusterType == EnemyClusterType.Diamond ? (enemyClusterWidth * 2 - 1) : enemyClusterHeight;
+
+            var tmpY = 0f;
+            for (int i = 0; i < formationHeight; i++)
             {
-                var tmpY = 0f;
-                for (int i = 0; i < formationHeight; i++)
+                var isEvenY = i%2 == 0;
+                var changeY = isEvenY ? tmpY : -tmpY;
+                var rowPosition = new Vector3(0, changeY, 0);
+
+                var pooledEnemyClusterRow = enemyPoolManager.SpawnEnemyClusterRow(rowPosition, Quaternion.identity, true, transform, false);
+                currentEnemyClusterRows.Add(pooledEnemyClusterRow);
+
+                var tmpX = 0f;
+                for (int j = 0; j < enemyClusterWidth; j++)
                 {
-                    var isEvenY = i % 2 == 0;
-                    var changeY = isEvenY ? tmpY : -tmpY;
-                    var rowPosition = new Vector3(0, changeY, 0);
+                    var enemyType = GetRandomEnemyTypeBasedOnDifficulty(levelDifficulty);
 
-                    var pooledEnemyClusterRow = enemyPoolManager.SpawnEnemyClusterRow(rowPosition, Quaternion.identity, true, transform, false);
-                    currentEnemyClusterRows.Add(pooledEnemyClusterRow);
+                    var isEvenX = j%2 == 0;
+                    var changeX = isEvenX ? tmpX : -tmpX;
+                    var enemyPosition = new Vector3(changeX, 0, 0);
 
-                    var tmpX = 0f;
-                    for (int j = 0; j < formationWidth; j++)
+                    var enemyBase = enemyPoolManager.SpawnEnemy(enemyType, enemyPosition, Quaternion.identity, true, pooledEnemyClusterRow.transform, false);
+                    currentEnemyCluster.Add(currentClusterCounter, enemyBase);
+                    enemyBase.enemyId = currentClusterCounter;
+                    currentClusterCounter++;
+
+                    if (isEvenX)
                     {
-                        var enemyType = GetRandomEnemyTypeBasedOnDifficulty(levelDifficulty);
+                        tmpX += widthSpacing;
+                    }
+                }
 
-                        var isEvenX = j % 2 == 0;
-                        var changeX = isEvenX ? tmpX : -tmpX;
-                        var enemyPosition = new Vector3(changeX, 0, 0);
-
-                        var enemyBase = enemyPoolManager.SpawnEnemy(enemyType, enemyPosition, Quaternion.identity, true, pooledEnemyClusterRow.transform, false);
-                        currentEnemyCluster.Add(currentClusterCounter, enemyBase);
-                        enemyBase.enemyId = currentClusterCounter;
-                        currentClusterCounter++;
-
-                        if (isEvenX)
-                        {
-                            tmpX += widthSpacing;
-                        }
+                if (isEvenY)
+                {
+                    if (enemyClusterType == EnemyClusterType.Diamond)
+                    {
+                        enemyClusterWidth--;
                     }
 
-                    if (isEvenY)
-                    {
-                        tmpY += heightSpacing;
-                    }
+                    tmpY += heightSpacing;
                 }
             }
 
             scaleEasingApplier.StartEase(0, 1, spawnTimeInSeconds, spawnClusterScaleEasingType);
 
             // TODO -> Add cluster type for daimond
+        }
+
+        public int GetRandomEnemyId()
+        {
+            var enemyKeys = currentEnemyCluster.Keys.ToArray(); // TODO -> Have generic pools for arrays and lists !!!
+            var randomId = enemyKeys.GetRandomElement(); 
+            return randomId;
         }
 
         // TODO -> should this be in enemy manager ???
@@ -171,15 +166,17 @@ namespace Assets.Scripts
 
             var enemy = currentEnemyCluster[enemyId];
             var enemyDied = enemy.TakeDamage(damage);
-            enemyPoolManager.SpawnHitFx(enemy.transform.position, Quaternion.identity);
+            var enemyAction = EnemyAction.DamageHit;
 
             if (enemyDied)
             {
                 enemyPoolManager.DespawnEnemy(enemy);
                 currentClusterDeadCounter++;
                 currentEnemyCluster.Remove(enemyId);
+                enemyAction = EnemyAction.Died;
             }
 
+            enemyPoolManager.SpawnHitFx(enemyAction, enemy.transform.position, Quaternion.identity);
             return enemyDied;
         }
 
@@ -254,24 +251,5 @@ namespace Assets.Scripts
             currentClusterDeadCounter = 0;
             currentClusterCounter = 0;
         }
-
-        //public int[] Set(int totalAttackingEnemies)
-        //{
-
-        //}
-
-        //public void SetRandomTargets()
-        //{
-        //    var enumerator = currentEnemyCluster.GetEnumerator();
-        //    while (enumerator.MoveNext())
-        //    {
-        //        var current = enumerator.Current;
-        //        var randomTarget = playerManager.GetRandomPlayerOwner();
-        //        if (randomTarget != null)
-        //        {
-        //            current.Value.targetPlayer = randomTarget;
-        //        }
-        //    }
-        //}
     }
 }

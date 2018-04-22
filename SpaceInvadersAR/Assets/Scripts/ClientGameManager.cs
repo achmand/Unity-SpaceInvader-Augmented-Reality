@@ -9,6 +9,7 @@ namespace Assets.Scripts
         LevelTransitioning,
         LevelStarted,
         LevelEnding,
+        GameStarted,
         GameEnded
     }
 
@@ -35,16 +36,18 @@ namespace Assets.Scripts
         private LevelRepository levelRepository;
         private UiManager uiManager;
         private AudioManager audioManager;
+        private PlayerManager playerManager;
 
         private void Awake()
         {
-            var globalReferenceManager = GlobalReferenceManager.GlobalInstance;
-            rpcGameManager = globalReferenceManager.rpcGameManager;
-            gameTimerManager = globalReferenceManager.gameTimerManager;
-            enemyManager = globalReferenceManager.enemyManager;
-            levelRepository = globalReferenceManager.levelRepository;
-            uiManager = globalReferenceManager.uiManager;
-            audioManager = globalReferenceManager.audioManager;
+            var components = GlobalReferenceManager.GlobalInstance;
+            rpcGameManager = components.rpcGameManager;
+            gameTimerManager = components.gameTimerManager;
+            enemyManager = components.enemyManager;
+            levelRepository = components.levelRepository;
+            uiManager = components.uiManager;
+            audioManager = components.audioManager;
+            playerManager = components.playerManager;
 
             currentGameState = GameState.None;
             currentGameDetails = new CurrentGameDetails
@@ -55,6 +58,15 @@ namespace Assets.Scripts
 
         void Update()
         {
+            if (currentGameState == GameState.GameStarted)
+            {
+                var allPlayersJoinedGame = PlayerNetwork.Instance.playersInGame == playerManager.TotalRoomPlayers;
+                if (allPlayersJoinedGame)
+                {
+                    StartLevelMaster();
+                }
+            }
+
             if (currentGameState == GameState.StartLevelTransition)
             {
                 currentGameState = GameState.LevelTransitioning;
@@ -70,37 +82,44 @@ namespace Assets.Scripts
             {
                 CheckLevelEndingState();
             }
+
+            if (currentGameState == GameState.GameEnded)
+            {
+                GameEnded();
+            }
         }
 
         // starting game 
         public void StartGame()
         {
             enemyManager.InitializeGame();
-            StartLevelMaster();
+            currentGameState = GameState.GameStarted;
         }
 
-        public void StartLevelMaster()
+        private void StartLevelMaster()
         {
-            if (PhotonNetwork.isMasterClient)
+            if (!PhotonNetwork.isMasterClient)
             {
-                var currentLevelNo = currentGameDetails.currentLevelNo;
-                SetCurrentLevelDetails(currentLevelNo);
-                var currentLevel = currentGameDetails.currentLevel;
-
-                var now = PhotonNetwork.time;
-                var levelTimeSeconds = currentLevel.levelTimeSeconds;
-
-                gameTimerManager.SetLevelTimeLength(levelTimeSeconds);
-                gameTimerManager.SetLevelStartTime(now);
-
-                var levelNo = currentLevel.levelNo;
-                var startingClusterType = enemyManager.CreateNewClusterMaster();
-
-                rpcGameManager.StartLevelAck(levelNo, now, startingClusterType);
-
-                currentGameState = GameState.LevelStarted;
-                audioManager.Play("Level Start Jingle");
+                return;
             }
+
+            var currentLevelNo = currentGameDetails.currentLevelNo;
+            SetCurrentLevelDetails(currentLevelNo);
+            var currentLevel = currentGameDetails.currentLevel;
+
+            var now = PhotonNetwork.time;
+            var levelTimeSeconds = currentLevel.levelTimeSeconds;
+
+            gameTimerManager.SetLevelTimeLength(levelTimeSeconds);
+            gameTimerManager.SetLevelStartTime(now);
+
+            var levelNo = currentLevel.levelNo;
+            var startingClusterType = enemyManager.CreateNewClusterMaster(false);
+
+            rpcGameManager.StartLevelAck(levelNo, now, startingClusterType);
+
+            currentGameState = GameState.LevelStarted;
+            audioManager.Play("Level Start Jingle");
         }
 
         public void StartLevelClient(int levelNo, double levelStartTime, EnemyClusterType startingEnemyClusterType)
@@ -145,6 +164,12 @@ namespace Assets.Scripts
                 uiManager.uiScoreBreakdown.DisplayBreakdownScores();
                 currentGameState = GameState.LevelEnding;
             }
+
+            var totalAlive = playerManager.totalAlivePlayers;
+            if (totalAlive <= 0)
+            {
+                currentGameState = GameState.GameEnded; 
+            }
         }
 
         private void CheckLevelEndingState()
@@ -162,6 +187,11 @@ namespace Assets.Scripts
                 currentGameDetails.currentLevelNo = nextLevel;
                 currentGameState = GameState.StartLevelTransition;
             }
+        }
+
+        private void GameEnded()
+        {
+
         }
     }
 }

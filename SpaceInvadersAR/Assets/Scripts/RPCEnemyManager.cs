@@ -28,5 +28,16 @@ namespace Assets.Scripts
         {
             enemyManager.CreateNewCluster(enemyClusterType);
         }
+
+        public void EnemyFire(int attackingEnemyId, int playerTarget)
+        {
+            photonView.RPC("RPC_EnemyFire", PhotonTargets.Others, attackingEnemyId, playerTarget);
+        }
+
+        [PunRPC]
+        private void RPC_EnemyFire(int attackingEnemyId, int playerTarget)
+        {
+            enemyManager.EnemyAttackClient(attackingEnemyId, playerTarget);
+        }
     }
 }

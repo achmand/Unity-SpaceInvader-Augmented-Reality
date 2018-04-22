@@ -20,7 +20,6 @@ namespace Assets.Scripts
             get { return playerListingPrefab; }
         }
 
-        public Button roomStateButton; 
         public Button leaveRoomButton; 
 
         private readonly Dictionary<string, UiPlayerListing> uiPlayerListings = new Dictionary<string, UiPlayerListing>();
@@ -31,7 +30,6 @@ namespace Assets.Scripts
 
         void Awake()
         {
-            roomStateButton.onClick.AddListener(OnClickRoomState);
             leaveRoomButton.onClick.AddListener(OnClickLeaveRoom);
         }
 
@@ -44,17 +42,15 @@ namespace Assets.Scripts
         // called by photon whenever you join a room
         private void OnJoinedRoom()
         {
-            // TODO -> Fix this shitty structure which Im following from a tutorial !!!
-            // TODO -> Fix this shitty structure which Im following from a tutorial !!!
-            // TODO -> Fix this shitty structure which Im following from a tutorial !!!
-
             foreach (Transform child in transform)
             {
                 Destroy(child.gameObject);
             }
 
-            var uiCurrentRoomLobbyPanel = MenuManager.Instance.uiMenuPanel.UiCurrentRoomLobbyPanel;
-            uiCurrentRoomLobbyPanel.currentRoomRectTransform.transform.SetAsLastSibling();
+            //var uiCurrentRoomLobbyPanel = MenuManager.Instance.uiMenuPanel.UiCurrentRoomLobbyPanel;
+            //uiCurrentRoomLobbyPanel.currentRoomRectTransform.transform.SetAsLastSibling();
+
+            MenuManager.Instance.ShowCurrentRoom();
 
             var photonPlayers = PhotonNetwork.playerList;
             for (int i = 0; i < photonPlayers.Length; i++)

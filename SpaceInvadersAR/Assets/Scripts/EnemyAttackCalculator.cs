@@ -21,6 +21,15 @@ namespace Assets.Scripts
                 {LevelDifficulty.Insane, new[] {9, 13}}
             };
 
+        private readonly Dictionary<LevelDifficulty, int[]> enemyAttackingIntervalCollection =
+           new Dictionary<LevelDifficulty, int[]>(LevelTypeEqualityComparer.Default)
+           {
+                {LevelDifficulty.Easy, new[] {4, 5}},
+                {LevelDifficulty.Medium, new[] {3, 5}},
+                {LevelDifficulty.Hard, new[] {2, 4}},
+                {LevelDifficulty.Insane, new[] {1, 2}}
+           };
+
 
         public int GetTotalAttackingEnemies(LevelDifficulty levelDifficulty)
         {
@@ -31,6 +40,18 @@ namespace Assets.Scripts
 
             var totalAttackingEnemies = enemyAttackingTotalCollection[levelDifficulty];
             var randomizeTotal = random.Next(totalAttackingEnemies[0], totalAttackingEnemies[1]);
+            return randomizeTotal;
+        }
+
+        public int GetAttackIntervalEnemies(LevelDifficulty levelDifficulty)
+        {
+            if (!enemyAttackingIntervalCollection.ContainsKey(levelDifficulty))
+            {
+                return 0;
+            }
+
+            var attackingInterval = enemyAttackingIntervalCollection[levelDifficulty];
+            var randomizeTotal = random.Next(attackingInterval[0], attackingInterval[1]);
             return randomizeTotal;
         }
     }

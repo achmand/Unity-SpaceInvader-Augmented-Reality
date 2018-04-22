@@ -2,6 +2,13 @@
 
 namespace Assets.Scripts
 {
+    public enum EnemyAction
+    {
+        Shoot, 
+        DamageHit, 
+        Died
+    }
+
     public enum EnemyType
     {
         SimpleDroid = 0,

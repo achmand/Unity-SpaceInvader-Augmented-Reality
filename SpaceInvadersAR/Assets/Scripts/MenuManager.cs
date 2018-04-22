@@ -4,16 +4,44 @@ namespace Assets.Scripts
 {
     public class MenuManager : MonoBehaviour
     {
+        public RectTransform menuContainer;
+        public RectTransform lobbyContainer;
+        public RectTransform currentRoomContainer;
+
+        public UiRoomLobbyPanel uiRoomLobbyPanel;
+
         public static MenuManager Instance;
 
-        public UiMenuPanel uiMenuPanel;
-        
-        private void Awake()
+        void Awake()
         {
-            uiMenuPanel = FindObjectOfType<UiMenuPanel>();
-            Instance = this; 
+            Instance = this;
+            var audioManager = FindObjectOfType<AudioManager>();
+            audioManager.PlayTheme();
+
+            lobbyContainer.gameObject.SetActive(false);
+            currentRoomContainer.gameObject.SetActive(false);
         }
-        
-        //[SerializeField] private LobbyMa
+
+        public void ShowMenu()
+        {
+            EnableContainers(true, false, false);
+        }
+
+        public void ShowLobby()
+        {
+            EnableContainers(false, true, false);
+        }
+
+        public void ShowCurrentRoom()
+        {
+            EnableContainers(false, false, true);
+        }
+
+        private void EnableContainers(bool showMenu, bool showLobby, bool showCurrentRoom)
+        {
+            menuContainer.gameObject.SetActive(showMenu);
+            lobbyContainer.gameObject.SetActive(showLobby);
+            currentRoomContainer.gameObject.SetActive(showCurrentRoom);
+        }
     }
 }

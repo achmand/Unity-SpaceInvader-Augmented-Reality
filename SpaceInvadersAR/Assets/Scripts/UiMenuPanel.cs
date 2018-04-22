@@ -1,25 +1,25 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts
 {
     public sealed class UiMenuPanel : MonoBehaviour
     {
-        [SerializeField] private UiRoomLobbyPanel uiRoomLobbyPanel;
-        public UiRoomLobbyPanel UiRoomLobbyPanel
-        {
-            get { return uiRoomLobbyPanel; }
-        }
-
-        [SerializeField]
-        private UiCurrentRoomLobbyPanel uiCurrentRoomLobbyPanel;
-        public UiCurrentRoomLobbyPanel UiCurrentRoomLobbyPanel
-        {
-            get { return uiCurrentRoomLobbyPanel; }
-        }
+        public Button playButton;
+        public Button leaderBoardButton;
+        public Button tutorialButton;
+        public Button exitButton;
 
         private void Awake()
         {
+            MenuManager.Instance.ShowMenu();
+            playButton.onClick.AddListener(MenuManager.Instance.ShowLobby);
+            exitButton.onClick.AddListener(ExitApplication);
+        }
 
+        private void ExitApplication()
+        {
+            Application.Quit();
         }
     }
 }

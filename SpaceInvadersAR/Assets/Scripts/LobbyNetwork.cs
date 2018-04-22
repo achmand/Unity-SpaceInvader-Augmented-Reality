@@ -25,7 +25,8 @@ namespace Assets.Scripts
             print("Joined Lobby.");
             if (!PhotonNetwork.inRoom)
             {
-                MenuManager.Instance.uiMenuPanel.UiRoomLobbyPanel.roomLobbyRectTransform.transform.SetAsLastSibling();
+                MenuManager.Instance.ShowMenu();
+                //MenuManager.Instance.uiRoomLobbyPanel.roomLobbyRectTransform.transform.SetAsLastSibling();
             }
         }
     }

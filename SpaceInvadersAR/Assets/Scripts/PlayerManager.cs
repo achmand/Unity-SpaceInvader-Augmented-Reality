@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -16,18 +17,18 @@ namespace Assets.Scripts
     //    }
     //}
 
+    //public class PlayerSpawnedEventArgs : EventArgs
+    //{
+    //    public int PlayerId { get; set; }
+    //}
 
-    public class PlayerSpawnedEventArgs : EventArgs
-    {
-        public int PlayerId { get; set; }
-    }
-
-    // TODO -> Reference to local player ??
     public sealed class PlayerManager : MonoBehaviour
     {
-        private Dictionary<int, PlayerOwner> roomPlayerOwners;
-
         public int TotalRoomPlayers { get { return roomPlayerOwners.Count; } }
+        public int totalAlivePlayers; 
+
+        private Dictionary<int, PlayerOwner> roomPlayerOwners;
+        private UiManager uiManager;
 
         public PlayerOwner LocalPlayerOwner
         {
@@ -39,12 +40,23 @@ namespace Assets.Scripts
 
         void Awake()
         {
+            var components = GlobalReferenceManager.GlobalInstance;
+            uiManager = components.uiManager;
+
             roomPlayerOwners = new Dictionary<int, PlayerOwner>();
         }
 
         public void AddPlayer(PlayerOwner playerOwner)
         {
-            roomPlayerOwners.Add(playerOwner.PlayerId, playerOwner);
+            var playerId = playerOwner.PlayerId;
+            roomPlayerOwners.Add(playerId, playerOwner);
+            totalAlivePlayers++;
+
+            //var isLocalPlayer = IsLocalPlayer(playerId);
+            //if (isLocalPlayer)
+            //{
+            //    playerOwner.OnPlayerDied += PlayerOwner_OnPlayerDied;
+            //}
         }
 
         public PlayerOwner ResolvePlayerOwner(int playerId)
@@ -57,44 +69,47 @@ namespace Assets.Scripts
             return roomPlayerOwners[playerId];
         }
 
-        //public PlayerOwner GetRandomPlayerOwner()
+        public bool IsLocalPlayer(int playerId)
+        {
+            if (LocalPlayerOwner == null)
+            {
+                return false; 
+            }
+
+            return LocalPlayerOwner.PlayerId == playerId;
+        }
+
+        public PlayerOwner GetRandomPlayerOwner()
+        {
+            var playerKeys = roomPlayerOwners.Keys.ToArray(); // TODO -> Have generic pools for arrays and lists !!!
+            var randomId = playerKeys.GetRandomElement();
+            if (!roomPlayerOwners.ContainsKey(randomId))
+            {
+                return null;
+            }
+
+            var randomPlayerOwner = roomPlayerOwners[randomId];
+            if (!randomPlayerOwner.IsAlive) // TODO -> Temporary, must make sure to only select from alive player owners
+            {
+                return null;
+            }
+
+            return randomPlayerOwner;
+        }
+
+        public void PlayerDied(int playerId)
+        {
+            totalAlivePlayers--;
+            var isLocalPlayer = IsLocalPlayer(playerId);
+            if (isLocalPlayer)
+            {
+                uiManager.ShowGameOverPanel();
+            }
+        }
+
+        //private void PlayerOwner_OnPlayerDied(object sender, EventArgs e)
         //{
-        //    if (PlayerNetwork.Instance.playersInGame == TotalRoomPlayers)
-        //    {
-        //        var keys = roomPlayerOwners.Keys.ToArray();
-        //        var keyPosition = UnityEngine.Random.Range(0, keys.Length);
-        //        var chosenKey = keys[keyPosition];
-
-        //        return roomPlayerOwners.ContainsKey(chosenKey) ? roomPlayerOwners[chosenKey] : null;
-        //    }
-
-        //    return null;
-        //}
-
-        //public static PlayerManager Instance;
-
-        //private PhotonView photonView;
-        //private Dictionary<string, PlayerStats> playersStats = new Dictionary<string, PlayerStats>();
-
-        //private void Awake()
-        //{
-        //    Instance = this;
-        //    photonView = GetComponent<PhotonView>();
-        //}
-
-        //public void AddPlayerStats(PhotonPlayer photonPlayer)
-        //{
-        //    var playerName = photonPlayer.NickName;
-        //    if (!playersStats.ContainsKey(playerName))
-        //    {
-        //        var playerStat = new PlayerStats(photonPlayer, 100f);
-        //        playersStats.Add(playerName, playerStat);
-        //    }
-        //}
-
-        //public void ModifyHealth(PhotonPlayer photonPlayer, int value)
-        //{
-
+        //    uiManager.ShowGameOverPanel();
         //}
     }
 }
